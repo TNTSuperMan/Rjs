@@ -1,7 +1,7 @@
 {
   "name": "rjs",
   "version": "0.0.0",
-  "description": "Reactive and simple javascript framework",
+  "description": "simple, react, fast.",
   "type": "module",
   "scripts": {
     "build": "rollup -c"
