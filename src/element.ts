@@ -6,10 +6,11 @@ export class VNode<T extends RNode>{
     #reacts: ReactIdentity[];
     #reactvals: symbol[] = [];
     #remove_dom: ()=>void;
-    constructor(node: T, reacts: ReactIdentity[], remove: ()=>void){
+    constructor(node: T, reacts: ReactIdentity[]){
         this.node = node;
         this.#reacts = reacts;
-        this.#remove_dom = remove;
+        this.#remove_dom = node.remove.bind(node);
+        node.remove = this.destroy;
     }
     update(){
         updateReactives(this.#reacts);
@@ -50,19 +51,14 @@ export function createVElement( tag: string, attrs: ()=>object,
     //Event
     Object.entries(event).forEach(e=>
         element.addEventListener(e[0], e[1]));
-
-    const vnode = new VNode(element, reacts, element.remove.bind(element));
-    element.remove = () => vnode.destroy();
-    return vnode;
+    
+    return new VNode(element, reacts);
 }
 
 export function createVText( text: (()=>string) ): VNode<Text>{
     const element = new Text();
-    let reacts:ReactIdentity[] = 
-        createReact(()=>
-            element.nodeValue = text());
     
-    const vnode = new VNode(element, reacts, element.remove.bind(element));
-    element.remove = () => vnode.destroy();
-    return vnode;
+    return new VNode(element, 
+        createReact(()=>
+            element.nodeValue = text()));
 }
