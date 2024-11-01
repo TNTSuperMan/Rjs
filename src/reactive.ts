@@ -5,7 +5,7 @@ type ReactiveTarget = [symbol, string|symbol, ()=>void];
 export let react_target: ReactiveTarget[] = [];
 
 // proxyid, prop
-let proxy_recorder: [symbol, string|symbol][][] = [];
+let proxy_recorder: ReactIdentity[][] = [];
 export const last_recorder = () => proxy_recorder[proxy_recorder.length-1];
 export let is_recording = false;
 
