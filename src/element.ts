@@ -1,4 +1,5 @@
-import { destroyReactives, fook, createReact, ReactIdentity, updateReactives, createProxy, destroyProxy } from "./reactive";
+import { destroyReactives, fook, createReact, ReactIdentity, updateReactives } from "./reactive";
+import { createProxy, destroyProxy } from "./proxy";
 
 type RNode = Element | CharacterData;
 export class VNode<T extends RNode>{
@@ -21,12 +22,19 @@ export class VNode<T extends RNode>{
         this.node.childNodes.forEach(e=>e.remove());
         this.#remove_dom();
     }
-    fook(target: ()=>void, effect: ()=>void){
-        this.#reacts.push(...fook(target, effect));
-    }
     createProxy<T extends object>(target: T){
         const proxy = createProxy(target);
         this.#reactvals.push(proxy[1]);
+        return proxy[0];
+    }
+    fook(target: ()=>void, effect: ()=>void){
+        this.#reacts.push(...fook(target, effect));
+    }
+    calculate<T>(target: ()=>T): {value: T}{
+        const proxy = createProxy({value: target()});
+        this.#reactvals.push(proxy[1]);
+        this.#reacts.push(...createReact(()=>
+            proxy[0].value = target()));
         return proxy[0];
     }
 }
