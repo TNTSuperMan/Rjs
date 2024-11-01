@@ -4,10 +4,8 @@ var R = (function (exports) {
     let react_target = [];
     // proxyid, prop
     let proxy_recorder = [];
-    let is_recording = false;
-    // proxy, proxyid, revokefn
-    const proxies = [];
     const last_recorder = () => proxy_recorder[proxy_recorder.length - 1];
+    let is_recording = false;
     const createReact = (apply) => fook(apply, apply);
     const fook = (target, effect) => {
         proxy_recorder.push([]);
@@ -23,10 +21,13 @@ var R = (function (exports) {
         return [];
     };
     const destroyReactives = (identities) => react_target = react_target.filter(e => !identities.some(t => t[0] == e[0] &&
-        t[1] == e[1]));
+        t.length == 2 ? t[1] == e[1] : true));
     const updateReactives = (identities) => react_target.filter(e => identities.some(t => t[0] == e[0] &&
         t[1] == e[1]))
         .forEach(e => e[2]());
+
+    // proxy, proxyid, revokefn
+    const proxies = [];
     const createProxy = (target) => {
         const id = Symbol();
         const { proxy, revoke } = Proxy.revocable(target, {
@@ -45,8 +46,7 @@ var R = (function (exports) {
         });
         proxies.push([target, id, () => {
                 revoke();
-                react_target =
-                    react_target.filter(e => e[0] != id);
+                destroyReactives([[id]]);
             }]);
         return [proxy, id];
     };
@@ -61,18 +61,19 @@ var R = (function (exports) {
     class VNode {
         node;
         #reacts;
-        #reactvals = [];
+        #proxies = [];
         #remove_dom;
-        constructor(node, reacts, remove) {
+        constructor(node, reacts = []) {
             this.node = node;
             this.#reacts = reacts;
-            this.#remove_dom = remove;
+            this.#remove_dom = node.remove.bind(node);
+            node.remove = this.destroy;
         }
         update() {
             updateReactives(this.#reacts);
         }
         destroy() {
-            this.#reactvals.forEach(e => destroyProxy(e));
+            this.#proxies.forEach(e => destroyProxy(e));
             destroyReactives(this.#reacts);
             this.node.childNodes.forEach(e => e.remove());
             this.#remove_dom();
@@ -80,10 +81,14 @@ var R = (function (exports) {
         fook(target, effect) {
             this.#reacts.push(...fook(target, effect));
         }
-        createProxy(target) {
-            const proxy = createProxy(target);
-            this.#reactvals.push(proxy[1]);
+        calculate(target) {
+            const proxy = createProxy({ value: target() });
+            this.#proxies.push(proxy[1]);
+            this.#reacts.push(...createReact(() => proxy[0].value = target()));
             return proxy[0];
+        }
+        addProxy(id) {
+            this.#proxies.push(id);
         }
     }
     function createVElement(tag, attrs, contents, event) {
@@ -101,20 +106,15 @@ var R = (function (exports) {
         }));
         //Event
         Object.entries(event).forEach(e => element.addEventListener(e[0], e[1]));
-        const remove = element.remove.bind(element);
-        const vnode = new VNode(element, reacts, remove);
-        element.remove = () => vnode.destroy();
-        return vnode;
+        return new VNode(element, reacts);
     }
     function createVText(text) {
         const element = new Text();
-        let reacts = createReact(() => element.nodeValue = text());
-        const remove = element.remove.bind(element);
-        const vnode = new VNode(element, reacts, remove);
-        element.remove = () => vnode.destroy();
-        return vnode;
+        return new VNode(element, createReact(() => element.nodeValue = text()));
     }
 
+    exports.VNode = VNode;
+    exports.createProxy = createProxy;
     exports.createVElement = createVElement;
     exports.createVText = createVText;
 

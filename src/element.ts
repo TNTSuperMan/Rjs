@@ -5,9 +5,9 @@ type RNode = Element | CharacterData;
 export class VNode<T extends RNode>{
     node: T;
     #reacts: ReactIdentity[];
-    #reactvals: symbol[] = [];
+    #proxies: symbol[] = [];
     #remove_dom: ()=>void;
-    constructor(node: T, reacts: ReactIdentity[]){
+    constructor(node: T, reacts: ReactIdentity[] = []){
         this.node = node;
         this.#reacts = reacts;
         this.#remove_dom = node.remove.bind(node);
@@ -17,25 +17,23 @@ export class VNode<T extends RNode>{
         updateReactives(this.#reacts);
     }
     destroy(){
-        this.#reactvals.forEach(e=>destroyProxy(e));
+        this.#proxies.forEach(e=>destroyProxy(e));
         destroyReactives(this.#reacts);
         this.node.childNodes.forEach(e=>e.remove());
         this.#remove_dom();
-    }
-    createProxy<T extends object>(target: T){
-        const proxy = createProxy(target);
-        this.#reactvals.push(proxy[1]);
-        return proxy[0];
     }
     fook(target: ()=>void, effect: ()=>void){
         this.#reacts.push(...fook(target, effect));
     }
     calculate<T>(target: ()=>T): {value: T}{
         const proxy = createProxy({value: target()});
-        this.#reactvals.push(proxy[1]);
+        this.#proxies.push(proxy[1]);
         this.#reacts.push(...createReact(()=>
             proxy[0].value = target()));
         return proxy[0];
+    }
+    addProxy(id: symbol){
+        this.#proxies.push(id);
     }
 }
 
