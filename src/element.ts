@@ -51,8 +51,7 @@ export function createVElement( tag: string, attrs: ()=>object,
     Object.entries(event).forEach(e=>
         element.addEventListener(e[0], e[1]));
 
-    const remove = element.remove.bind(element);
-    const vnode = new VNode(element, reacts, remove);
+    const vnode = new VNode(element, reacts, element.remove.bind(element));
     element.remove = () => vnode.destroy();
     return vnode;
 }
@@ -62,8 +61,8 @@ export function createVText( text: (()=>string) ): VNode<Text>{
     let reacts:ReactIdentity[] = 
         createReact(()=>
             element.nodeValue = text());
-    const remove = element.remove.bind(element);
-    const vnode = new VNode(element, reacts, remove);
+    
+    const vnode = new VNode(element, reacts, element.remove.bind(element));
     element.remove = () => vnode.destroy();
     return vnode;
 }

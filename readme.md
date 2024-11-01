@@ -8,7 +8,7 @@ Reactとかのコード多いな～って、リアクティブの部分だけ作
 - Typescript対応
 - 完全()関数型
 - 内部伝達用オブジェクトは使わず、配列で伝達 → コードの無駄を無くす
-## How to use
+## How to use2...
 ```js
 import {createVElement as ve, createVText as vt} from "./dist/module.min.js";
 const _ = e=>e;
@@ -21,4 +21,5 @@ function App(){
         {} //Event
     )
 }
+document.body.appendChild(App().node);
 ```
