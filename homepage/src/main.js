@@ -1,5 +1,5 @@
 import index from "./components/index";
-import { createProxy } from "../../src";
+import { createProxy } from "./nodes/_";
 window.addEventListener("hashchange",e=>{
     proxy = location.hash
 })
