@@ -22,9 +22,15 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      
+      - name: Setup pages
+        uses: actions/configure-pages@v5
+      - name: Upload
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./homepage/dist
+          # Upload entire repository
+          path: './homepage/dist'
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+      
