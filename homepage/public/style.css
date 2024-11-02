@@ -52,6 +52,7 @@ a{
     color:white;
     text-decoration: none;
     transition:all 0.5s ease;
+    margin:10px;
 }
 a:hover{
     background:#ddd;
@@ -64,4 +65,22 @@ input, textarea{
     color:#fff;
     padding:5px;
     border-radius: 10px;
+}
+button{
+    background:#111;
+    color:#fff;
+    border-radius: 5px;
+    border:1px #fff solid;
+}
+
+/* Play */
+.play{
+    display:grid;
+}
+.play .left{
+    resize:vertical;
+    grid-column: 1/2;
+}
+.play .right{
+    grid-column: 2/3;
 }

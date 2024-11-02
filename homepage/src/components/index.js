@@ -1,7 +1,8 @@
 import createNode from "../nodes/index.htm"
 import createWorldCard from "./wordcard"
+import createPlay from "./play"
 import {createProxy} from "../nodes/_"
-export default props=>{
+export default ()=>{
     const [proxy, id] = createProxy({
         list:[
             {name: "simple", desc: "単純なリアクティブシステムと\nDOMへの反映のみを実装"},
@@ -9,6 +10,7 @@ export default props=>{
             {name: "fast", desc:   "無駄な仮想DOMを使用せずに\n更新する部分のみをすぐ更新"},
         ],
         worldcard:createWorldCard,
+        play: createPlay,
         name:"",
         desc:"",
         click(){
@@ -28,7 +30,6 @@ export default props=>{
         }
     })
     const vnode = createNode(proxy);
-    console.log(vnode)
-    vnode.addProxy(id);
+    vnode.addProxy(id)
     return vnode;
 }

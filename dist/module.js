@@ -73,7 +73,8 @@ class VNode {
     destroy() {
         this.#proxies.forEach(e => destroyProxy(e));
         destroyReactives(this.#reacts);
-        this.node.childNodes.forEach(e => e.remove());
+        while (this.node.childNodes.length)
+            this.node.childNodes[0].remove();
         this.#remove_dom();
     }
     fook(target, effect) {
@@ -99,7 +100,8 @@ function createVElement(tag, contents, attrs = () => ({}), event = {}) {
     }));
     //Contents
     reacts.push(...createReact(() => {
-        element.childNodes.forEach(e => e.remove());
+        while (element.childNodes.length)
+            element.childNodes[0].remove();
         contents().forEach(e => element.appendChild(e.node));
     }));
     //Event
