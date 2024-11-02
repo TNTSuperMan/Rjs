@@ -91,7 +91,7 @@ var R = (function (exports) {
             this.#proxies.push(id);
         }
     }
-    function createVElement(tag, contents, event = {}, attrs = () => ({})) {
+    function createVElement(tag, contents, attrs = () => ({}), event = {}) {
         const element = document.createElement(tag);
         const reacts = [];
         //Attrs
