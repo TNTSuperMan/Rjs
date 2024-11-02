@@ -58,13 +58,14 @@ const destroyProxy = (identity) => {
 class VNode {
     node;
     #reacts;
-    #proxies = [];
+    #proxies;
     #remove_dom;
     constructor(node, reacts = []) {
         this.node = node;
         this.#reacts = reacts;
         this.#remove_dom = node.remove.bind(node);
-        node.remove = this.destroy;
+        this.#proxies = [];
+        node.remove = () => this.destroy();
     }
     update() {
         updateReactives(this.#reacts);

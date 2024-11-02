@@ -5,13 +5,14 @@ type RNode = Element | CharacterData;
 export class VNode<T extends RNode>{
     node: T;
     #reacts: ReactIdentity[];
-    #proxies: symbol[] = [];
+    #proxies: symbol[];
     #remove_dom: ()=>void;
     constructor(node: T, reacts: ReactIdentity[] = []){
         this.node = node;
         this.#reacts = reacts;
         this.#remove_dom = node.remove.bind(node);
-        node.remove = this.destroy;
+        this.#proxies = [];
+        node.remove = () => this.destroy();
     }
     update(){
         updateReactives(this.#reacts);
