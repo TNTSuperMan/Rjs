@@ -27,7 +27,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build
+        run: npm run build:homepage
       
       - name: Setup pages
         uses: actions/configure-pages@v5
