@@ -34,7 +34,6 @@ jobs:
       - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: './homepage/dist'
       - name: Deploy
         id: deployment

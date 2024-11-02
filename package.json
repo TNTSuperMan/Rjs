@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "rollup -c",
-    "build:homepage": "npm --prefix ./homepage install && npm --prefix ./homepage run build"
+    "build:homepage": "cd homepage && npm install && npm run build"
   },
   "author": "TNTSuperMan",
   "license": "MIT",
