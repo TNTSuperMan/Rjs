@@ -76,6 +76,8 @@ button{
 /* Play */
 .play{
     display:grid;
+    height:300px;
+    margin:10px;
 }
 .play .left{
     resize:vertical;
@@ -83,4 +85,5 @@ button{
 }
 .play .right{
     grid-column: 2/3;
+    background:#fff;
 }

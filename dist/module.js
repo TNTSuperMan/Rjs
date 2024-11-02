@@ -106,6 +106,7 @@ function createVElement(tag, contents, attrs = () => ({}), event = {}) {
     }));
     //Event
     Object.entries(event).forEach(e => element.addEventListener(e[0], e[1]));
+    element.dispatchEvent(new CustomEvent("create"));
     return new VNode(element, reacts);
 }
 function createVText(text) {

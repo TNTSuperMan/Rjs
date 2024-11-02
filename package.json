@@ -4,7 +4,8 @@
   "description": "simple, react, fast.",
   "type": "module",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "build:homepage": "cd homepage && npm install && npm run build"
   },
   "author": "TNTSuperMan",
   "license": "MIT",

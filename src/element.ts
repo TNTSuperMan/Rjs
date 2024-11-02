@@ -61,7 +61,7 @@ export function createVElement( tag: string, contents: (()=>VNode<RNode>[]),
     Object.entries(event).forEach(e=>
         element.addEventListener(e[0], e[1]));
     
-    element.dispatchEvent(new CustomEvent("create"))
+    element.dispatchEvent(new CustomEvent("create"));
     return new VNode(element, reacts);
 }
 

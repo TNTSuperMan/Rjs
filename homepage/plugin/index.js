@@ -30,7 +30,7 @@ function gen(e){
             }
             text += "}),{"
             events.forEach(e=>{
-                text += `${e[0]}:${e[1]}`
+                text += `${e[0]}:${e[1]},`
             })
             text += "}"
         }

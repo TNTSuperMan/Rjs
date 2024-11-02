@@ -1,4 +1,4 @@
-var R = (function (exports) {
+export default `var R = (function (exports) {
     'use strict';
 
     let react_target = [];
@@ -125,3 +125,4 @@ var R = (function (exports) {
     return exports;
 
 })({});
+`

@@ -4,10 +4,10 @@
     {{ e("div",()=>props.list.map(e=>props.worldcard(e))) }}
     <div class="card">
         <div class="left">
-            <input type="text" oninput="props.edit.name">
+            <input type="text" oncreate="props.create.name" oninput="props.edit.name">
         </div>
         <div class="right">
-            <textarea oninput="props.edit.desc"></textarea>
+            <textarea oncreate="props.create.desc" oninput="props.edit.desc"></textarea>
         </div>
     </div>
     <button onclick="props.click">+</button>
@@ -39,7 +39,7 @@ DOM操作には少し近づき、TextとElementを分けた。さらに内部の
 Typescriptで開発することで型安全にして、最善を尽くした。
 </pre>
     <h2>Start</h2>
-    <a target="_blank" href="https://github.com/TNTSuperMan/Rjs/tree/main/dist">Download Rjs</a>or play<wbr>
+    <a target="_blank" href="https://github.com/TNTSuperMan/Rjs/tree/main/dist">Download Rjs</a>or play<br><br>
     {{ props.play() }}
 </div>
 <link rel="stylesheet" href="../../dist/style.css">

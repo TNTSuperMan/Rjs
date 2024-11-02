@@ -13,12 +13,18 @@ export default ()=>{
         play: createPlay,
         name:"",
         desc:"",
+        input:{
+            name:null,
+            desc:null
+        },
         click(){
             proxy.list.push({
                 name:proxy.name,
                 desc:proxy.desc
             })
             proxy.list = proxy.list;
+            proxy.name = ""
+            proxy.desc = ""
         },
         edit:{
             name(e){
@@ -27,9 +33,23 @@ export default ()=>{
             desc(e){
                 proxy.desc = e.target.value;
             }
+        },
+        create:{
+            name(e){
+                proxy.input.name = e.target;
+            },
+            desc(e){
+                proxy.input.desc = e.target;
+            }
         }
     })
     const vnode = createNode(proxy);
     vnode.addProxy(id)
+    vnode.fook(()=>proxy.name,()=>{
+        proxy.input.name.value = proxy.name;
+    })
+    vnode.fook(()=>proxy.desc,()=>{
+        proxy.input.desc.value = proxy.desc;
+    })
     return vnode;
 }
