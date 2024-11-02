@@ -28,7 +28,7 @@ jobs:
         run: cd homepage
 
       - name: Copy css
-        run: cp public/style.css dist/style.css
+        run: cp ./public/style.css ./dist/style.css
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
