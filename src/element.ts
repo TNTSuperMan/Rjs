@@ -37,8 +37,8 @@ export class VNode<T extends RNode>{
     }
 }
 
-export function createVElement( tag: string, attrs: ()=>object,
-    contents: (()=>VNode<RNode>[]), event: object ): VNode<HTMLElement>{
+export function createVElement( tag: string, contents: (()=>VNode<RNode>[]), 
+    event: object={}, attrs: ()=>object=()=>({})): VNode<HTMLElement>{
     
     const element = document.createElement(tag);
 
