@@ -18,6 +18,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Copy style
+        run: cp ./homepage/public/style.css ./homepage/dist/style.css
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
