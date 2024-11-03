@@ -18,6 +18,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create dist dir
+        run: mkdir ./homepage/dist
+
+      - name: Copy html
+        run: cp ./homepage/index.html ./homepage/dist/index.html
+
       - name: Copy style
         run: cp ./homepage/public/style.css ./homepage/dist/style.css
 
@@ -26,7 +32,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Install dep
         run: npm install
       
       - name: Build

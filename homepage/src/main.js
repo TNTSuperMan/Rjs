@@ -1,3 +1,4 @@
+import "./style.css";
 import index from "./components/index";
 import { createProxy } from "./nodes/_";
 window.addEventListener("hashchange",e=>{
