@@ -16,14 +16,14 @@ export const createProxy = <T extends object>(target: T):[T,symbol] => {
         set(target, prop, value, receiver){
             const setret = Reflect.set(target, prop, value, receiver);
             react_target.filter(e=>
-                e[0] == id && e[1] == prop)
-                .forEach(e=>e[2]());
+                e[1] == id && e[2] == prop)
+                .forEach(e=>e[3]());
             return setret;
         }
     });
     proxies.push([target, id, ()=>{
         revoke();
-        destroyReactives([[id]]);
+        destroyReactives(id);
     }])
     return [proxy, id];
 }

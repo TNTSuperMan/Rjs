@@ -40,9 +40,12 @@ export const fook = (target: ()=>void, effect: ()=>void): symbol => {
     return id;
 }
 
-export const destroyReactives = (identities: symbol[]) => 
-    react_target = react_target.filter(e=>
-        !identities.some(t=>t == e[0]))
+export const destroyReactives = (identities: symbol[] | symbol) => 
+    Array.isArray(identities) ?
+        react_target = react_target.filter(e=>
+            !identities.some(t=>t == e[0])) :
+        react_target = react_target.filter(e=>
+            e[1] == identities)
 
 export const updateReactives = (identities: symbol[]) =>
     react_target.filter(e=>
