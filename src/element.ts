@@ -46,11 +46,10 @@ export const createVElement = ( tag: string, contents: (()=>VNode<RNode>[]),
 
     const reacts: symbol[] = [];
     //Attrs
-    reacts.push(createReact(()=>{
-        const attrs_map = Object.entries(attrs());
-        attrs_map.forEach(e=>
+    reacts.push(createReact(()=>
+        Object.entries(attrs()).forEach(e=>
             element.setAttribute(e[0], e[1]))
-    }));
+    ));
     //Contents
     reacts.push(createReact(()=>{
         while(element.childNodes.length)
