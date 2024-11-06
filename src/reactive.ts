@@ -2,12 +2,13 @@
 export type ReactIdentity = [symbol, string|symbol];
 // fookid, proxyid, prop, applyfn
 type ReactiveTarget = [symbol, symbol, string|symbol, ()=>void];
-export let react_target: ReactiveTarget[] = [];
 
 // proxyid, prop
-let proxy_recorder: ReactIdentity[][] = [];
-export const last_recorder = () => proxy_recorder[proxy_recorder.length-1];
+export let react_target: ReactiveTarget[] = [];
 export let is_recording = false;
+let proxy_recorder: ReactIdentity[][] = [];
+
+export const last_recorder = () => proxy_recorder[proxy_recorder.length-1];
 
 const watch=(target:()=>void)=>{
     proxy_recorder.push([]);
