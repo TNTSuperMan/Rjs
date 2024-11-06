@@ -44,18 +44,18 @@ export const createVElement = ( tag: string, contents: (()=>VNode<RNode>[]),
     
     const element = document.createElement(tag);
 
-    const reacts: symbol[] = [];
-    //Attrs
-    reacts.push(createReact(()=>
-        Object.entries(attrs()).forEach(e=>
-            element.setAttribute(e[0], e[1]))
-    ));
-    //Contents
-    reacts.push(createReact(()=>{
-        while(element.childNodes.length)
-            element.childNodes[0].remove();
-        contents().forEach(e=>element.appendChild(e.node));
-    }));
+    const reacts: symbol[] = [
+        //Attrs
+        createReact(()=>
+            Object.entries(attrs()).forEach(e=>
+                element.setAttribute(e[0], e[1]))),
+        //Content
+        createReact(()=>{
+            while(element.childNodes.length)
+                element.childNodes[0].remove();
+            contents().forEach(e=>element.appendChild(e.node));
+        })
+    ];
     //Event
     Object.entries(event).forEach(e=>
         element.addEventListener(e[0], e[1]));
