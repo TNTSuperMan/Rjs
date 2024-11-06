@@ -27,13 +27,6 @@ export class VNode<T extends RNode>{
     fook(target: ()=>void, effect: ()=>void){
         this.#reacts.push(fook(target, effect));
     }
-    calculate<T>(target: ()=>T): {value: T}{
-        const proxy = createProxy({value: target()});
-        this.#proxies.push(proxy[1]);
-        this.#reacts.push(createReact(()=>
-            proxy[0].value = target()));
-        return proxy[0];
-    }
     addProxy(id: symbol){
         this.#proxies.push(id);
     }
