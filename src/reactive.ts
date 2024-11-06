@@ -14,22 +14,19 @@ export const record_react = (e: ReactIdentity) =>
 const watch=(target:()=>void)=>{
     proxy_recorder.push([]);
     target();
-    return proxy_recorder.pop();
+    return proxy_recorder.pop() ?? [];
 }
 
-const subscribeReact=(id: symbol, target: ()=>void, effect: ()=>void)=>{
-    const result = watch(target);
-    if(result){
-        react_target.push(
-            ...result.map(
-                (e): ReactiveTarget =>
-                    [id, e[0], e[1], ()=>{
-                        effect();
-                        destroyReactives([id]);
-                        subscribeReact(id, target, effect);
-                    }]));
-    }
-}
+const subscribeReact=(id: symbol, target: ()=>void, effect: ()=>void)=>
+    react_target.push(
+        ...watch(target).map(
+            (e): ReactiveTarget =>
+                [id, e[0], e[1], ()=>{
+                    effect();
+                    destroyReactives([id]);
+                    subscribeReact(id, target, effect);
+}]));
+
 
 export const createReact = (apply: ()=>void): symbol => 
     fook(apply, apply)
