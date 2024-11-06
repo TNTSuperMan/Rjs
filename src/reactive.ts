@@ -28,7 +28,6 @@ const subscribeReact=(id: symbol, target: ()=>void, effect: ()=>void)=>
                     subscribeReact(id, target, effect);
 }]));
 
-
 export const createReact = (apply: ()=>void): symbol => 
     fook(apply, apply)
 
