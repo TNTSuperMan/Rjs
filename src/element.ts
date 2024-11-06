@@ -1,4 +1,4 @@
-import { destroyReactives, fook, createReact, ReactIdentity, updateReactives } from "./reactive";
+import { destroyReactives, fook, createReact, updateReactives } from "./reactive";
 import { createProxy, destroyProxy } from "./proxy";
 
 type RNode = Element | CharacterData;
@@ -39,8 +39,8 @@ export class VNode<T extends RNode>{
     }
 }
 
-export function createVElement( tag: string, contents: (()=>VNode<RNode>[]), 
-    attrs: ()=>object = ()=>({}), event: object = {}): VNode<HTMLElement>{
+export const createVElement = ( tag: string, contents: (()=>VNode<RNode>[]), 
+    attrs: ()=>object = ()=>({}), event: object = {}): VNode<HTMLElement> => {
     
     const element = document.createElement(tag);
 
@@ -65,7 +65,7 @@ export function createVElement( tag: string, contents: (()=>VNode<RNode>[]),
     return new VNode(element, reacts);
 }
 
-export function createVText( text: (()=>string) ): VNode<Text>{
+export const createVText = ( text: (()=>string) ): VNode<Text> => {
     const element = new Text();
     
     return new VNode(element, 
