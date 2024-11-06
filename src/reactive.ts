@@ -5,16 +5,15 @@ type ReactiveTarget = [symbol, symbol, string|symbol, ()=>void];
 
 // proxyid, prop
 export let react_target: ReactiveTarget[] = [];
-export let is_recording = false;
 let proxy_recorder: ReactIdentity[][] = [];
 
-export const last_recorder = () => proxy_recorder[proxy_recorder.length-1];
+export const record_react = (e: ReactIdentity) =>
+    proxy_recorder[proxy_recorder.length-1].some(t=>t[0]==e[0] && t[1]==e[1]) ?
+    proxy_recorder[proxy_recorder.length-1].push(e) : 0;
 
 const watch=(target:()=>void)=>{
     proxy_recorder.push([]);
-    is_recording = true;
     target();
-    if(proxy_recorder.length <= 1) is_recording = false;
     return proxy_recorder.pop();
 }
 

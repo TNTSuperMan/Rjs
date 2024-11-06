@@ -1,4 +1,4 @@
-import { last_recorder, is_recording, react_target, destroyReactives } from "./reactive";
+import { record_react, react_target, destroyReactives } from "./reactive";
 
 // proxy, proxyid, revokefn
 const proxies: [object, symbol, ()=>void][] = [];
@@ -7,10 +7,7 @@ export const createProxy = <T extends object>(target: T):[T,symbol] => {
     const id = Symbol();
     const {proxy, revoke} = Proxy.revocable(target, {
         get(target, prop, receiver){
-            if( is_recording && 
-                !last_recorder().some(e=>
-                    e[0]==id && e[1]==prop))
-                last_recorder().push([id, prop]);
+            record_react([id, prop]);
             return Reflect.get(target, prop, receiver);
         },
         set(target, prop, value, receiver){
