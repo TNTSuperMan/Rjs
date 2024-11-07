@@ -13,19 +13,21 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Install dep
+      
+      - name: Install
         run: npm install
-
+      
+      - name: Test
+        run: npm run test
+      
       - name: Build library
         run: npm run build
       
@@ -34,11 +36,12 @@ jobs:
       
       - name: Setup pages
         uses: actions/configure-pages@v5
+      
       - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: './homepage/dist'
+      
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-      
