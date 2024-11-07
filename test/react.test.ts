@@ -48,17 +48,13 @@ describe("Tower",()=>{
 
     it("Subscribe react",()=>
         createReact(()=>{
-            root_effectcount++;
+            root_effectcount += 1
             createReact(()=>proxy.value,()=>{
-                child_effectcount++;
+                child_effectcount += 1;
             })}));
-    console.log(root_effectcount)
-    it("Update",
-        ()=>proxy.value="");
     
-    it("Check effect count",()=>{
-        console.log(root_effectcount,child_effectcount)
-        expect(root_effectcount).toBe(1);
-        expect(child_effectcount).toBe(2);
-    })
+    it("Update", ()=>proxy.value="");
+    
+    it("Check root effect count", ()=>expect(root_effectcount).toBe(1));
+    it("Check child effect count", ()=>expect(child_effectcount).toBe(2));
 })
