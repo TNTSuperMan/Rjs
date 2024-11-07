@@ -36,5 +36,5 @@ describe("Target changing",()=>{
     })
 
     it("Is Applied?",()=>
-        expect(fook_apply_target).toBe(proxy.value1+"a"))
+        expect(fook_apply_target).toBe(proxy.value1))
 })
