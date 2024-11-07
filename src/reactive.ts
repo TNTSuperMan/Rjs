@@ -10,7 +10,7 @@ let proxy_recorder: ReactIdentity[][] = [];
 const last = () => proxy_recorder[proxy_recorder.length-1] ?? []
 export const record_react = (e: ReactIdentity) =>
     last().some(t=>t[0]==e[0] && t[1]==e[1]) ?
-    last().push(e) : 0;
+    0 : last().push(e);
 
 const watch=(target:()=>void)=>{
     proxy_recorder.push([]);

@@ -71,6 +71,7 @@ button{
     color:#fff;
     border-radius: 5px;
     border:1px #fff solid;
+    cursor:pointer;
 }
 
 /* Play */
