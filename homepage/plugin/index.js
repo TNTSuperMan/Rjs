@@ -15,7 +15,7 @@ function gen(e){
         text += "],"
         if(e.attributes.length){
             let events = []
-            text += "()=>_({";
+            text += "()=>({";
             for(let i = 0;i < e.attributes.length;i++){
                 let attr = e.attributes[i];
                 if(/^:/.test(attr.nodeName)){
@@ -44,7 +44,7 @@ function gen(e){
             return `t(()=>${t.substring(1,t.length-1)})`
         }else{
             if(t){
-                return `t($(${tostr(e.nodeValue)}))`
+                return `t(()=>${tostr(e.nodeValue)})`
             }else{
                 return undefined;
             }
@@ -56,7 +56,7 @@ function gen(e){
 
 function GenerateEntry(src){
     const entry = new JSDOM(src).window.document.body.children[0];
-    return `import {createVElement as e, createVText as t, $,_,$_} from "./_"
+    return `import {createVElement as e, createVText as t} from "./_"
 export default props=>${gen(entry)}
 
 `
