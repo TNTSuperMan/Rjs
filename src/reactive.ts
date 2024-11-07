@@ -18,20 +18,16 @@ const watch=(target:()=>void)=>{
     return proxy_recorder.pop() ?? [];
 }
 
-const subscribeReact=(id: symbol, target: ()=>void, effect: ()=>void)=>
-    react_target.push(
+const subscribeReact=(id: symbol, target: ()=>void, effect: (()=>void)|void)=>(
+    effect ? effect() : 0, react_target.push(
         ...watch(target).map(
             (e): ReactiveTarget =>
                 [id, e[0], e[1], ()=>{
-                    effect();
                     destroyReactives([id]);
                     subscribeReact(id, target, effect);
-                }]));
+                }])));
 
-export const createReact = (apply: ()=>void): symbol => 
-    fook(apply, apply)
-
-export const fook = (target: ()=>void, effect: ()=>void): symbol => {
+export const createReact = (target: ()=>void, effect: (()=>void) | void): symbol => {
     const id = Symbol();
     subscribeReact(id, target, effect);
     return id;

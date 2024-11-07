@@ -1,4 +1,4 @@
-import { destroyReactives, fook, createReact, updateReactives } from "./reactive";
+import { destroyReactives, createReact, updateReactives } from "./reactive";
 import { createProxy, destroyProxy } from "./proxy";
 
 type RNode = Element | CharacterData;
@@ -25,7 +25,7 @@ export class VNode<T extends RNode>{
         this.#remove_dom();
     }
     fook(target: ()=>void, effect: ()=>void){
-        this.#reacts.push(fook(target, effect));
+        this.#reacts.push(createReact(target, effect));
     }
     addProxy(id: symbol){
         this.#proxies.push(id);
