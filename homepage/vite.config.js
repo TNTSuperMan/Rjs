@@ -7,5 +7,6 @@ export default defineConfig({
     base:".",
     build: {
       minify: 'terser',
+      modulePreload: false
     }
 })
