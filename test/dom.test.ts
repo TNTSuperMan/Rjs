@@ -1,5 +1,5 @@
 import "./tests"
-import {createProxy, createVElement, createVText, VNode} from "../index.ts";
+import {createProxy, createVElement, createVText, VNode} from "../index";
 //@ts-ignore
 import { describe, it, expect } from "vitest";
 

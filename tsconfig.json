@@ -2,8 +2,6 @@
     "compilerOptions": {
         "target": "ESNext",
         "module": "esnext",
-        "strict": true,
-        "noEmit": false,
-        "allowImportingTsExtensions": true
+        "strict": true
     }
 }

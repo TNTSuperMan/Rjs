@@ -1,5 +1,5 @@
 import "./tests"
-import {createProxy, fook} from "../index.ts";
+import {createProxy, fook} from "../index";
 //@ts-ignore
 import { describe, it, expect } from "vitest";
 
