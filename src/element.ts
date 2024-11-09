@@ -1,8 +1,5 @@
 import { fook } from "./reactive";
 
-let doc:Document = document;
-export const changeDocument = (d: Document) => doc = d;
-
 export class VNode<T extends ChildNode>{
     node: T;
     #ondestroy: (()=>void)[];
@@ -27,7 +24,7 @@ export class VNode<T extends ChildNode>{
 export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]), 
     attrs: ()=>object = ()=>({}), event: object = {}): VNode<HTMLElement> => {
     
-    const element = doc.createElement(tag);
+    const element = document.createElement(tag);
 
     //Attrs
     fook(()=>
@@ -48,7 +45,7 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
 }
 
 export const createVText = ( text: (()=>string) ): VNode<Text> => {
-    const element = doc.createTextNode("");
+    const element = document.createTextNode("");
     fook(()=>
         element.nodeValue = text())
     return new VNode(element);
