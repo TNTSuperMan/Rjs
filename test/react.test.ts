@@ -3,61 +3,47 @@ import {createProxy, fook} from "../index.ts";
 //@ts-ignore
 import { describe, it, expect } from "vitest";
 
-describe("Simple",()=>{
-    const MSG = "Hello"
-    let proxy = {value:""};
-    let fook_apply_target = "";
-    it("Create proxy", ()=>
-        [proxy] = createProxy(proxy))
+describe("React",()=>{
+    it("Simple",()=>{
+        const MSG = "Hello"
+        const [proxy] = createProxy({value:""})
+        let fook_apply_target = "";
 
-    it("Subscribe react",()=>
-        fook(()=>fook_apply_target = proxy.value))
+        fook(()=>fook_apply_target = proxy.value)
+    
+        proxy.value = MSG
 
-    it("Edit proxy",()=>
-        proxy.value = MSG)
+        expect(fook_apply_target).toBe(MSG)
+    })
+    it("Target changing",()=>{
+        const MSG = "Hello"
+        let fook_apply_target = "";
+        const [proxy] = createProxy({value1:"",value2:"",cond:false})
 
-    it("Is Applied?",()=>
-        expect(fook_apply_target).toBe(MSG))
-})
-
-describe("Target changing",()=>{
-    const MSG = "Hello"
-    let proxy = {value1:"",value2:"",cond:false};
-    let fook_apply_target = "";
-    it("Create proxy", ()=>
-        [proxy] = createProxy(proxy))
-
-    it("Subscribe react",()=>
-        fook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2))
-
-    it("Edit proxy",()=>{
+        fook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2)
+    
         proxy.cond = true;
         proxy.value1 = MSG;
+    
+        expect(fook_apply_target).toBe(MSG)
     })
-
-    it("Is Applied?",()=>
-        expect(fook_apply_target).toBe(MSG))
-})
-
-describe("Tower",()=>{
-    let proxy = {value:"aaa"};
-    let root_effectcount = 0;
-    let child_effectcount = 0;
-    it("Create proxy",()=>
-        [proxy] = createProxy(proxy));
-
-    it("Subscribe react",()=>
+    it("Tower",()=>{
+        const [proxy] = createProxy({value:"aaa"})
+        let root_effectcount = 0;
+        let child_effectcount = 0;
+    
         fook(()=>{
             root_effectcount += 1
             fook(()=>proxy.value,()=>{
                 child_effectcount += 1;
-            })}));
+        })});
+        
+        expect(root_effectcount).toBe(1);
+        expect(child_effectcount).toBe(1);
     
-    it("Check root effect count", ()=>expect(root_effectcount).toBe(1));
-    it("Check child effect count", ()=>expect(child_effectcount).toBe(1));
-
-    it("Update", ()=>proxy.value="");
-    
-    it("Check root effect count", ()=>expect(root_effectcount).toBe(1));
-    it("Check child effect count", ()=>expect(child_effectcount).toBe(2));
+        proxy.value="";
+        
+        expect(root_effectcount).toBe(1);
+        expect(child_effectcount).toBe(2);
+    })
 })

@@ -1,5 +1,6 @@
 import { JSDOM } from "jsdom"
 //@ts-ignore
 import {vi} from "vitest"
-vi.stubGlobal("document", new JSDOM("").window.document);
-var document = new JSDOM("").window.document;
+const wind = new JSDOM("").window;
+vi.stubGlobal("document", wind.document);
+vi.stubGlobal("CustomEvent", wind.CustomEvent);
