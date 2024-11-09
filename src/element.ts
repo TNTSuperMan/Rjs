@@ -1,5 +1,8 @@
 import { createReact } from "./reactive";
 
+let wind:Window = window;
+export const changeWindow = (w: Window) => wind = w;
+
 export class VNode<T extends ChildNode>{
     node: T;
     #ondestroy: (()=>void)[];
@@ -24,7 +27,7 @@ export class VNode<T extends ChildNode>{
 export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]), 
     attrs: ()=>object = ()=>({}), event: object = {}): VNode<HTMLElement> => {
     
-    const element = document.createElement(tag);
+    const element = wind.document.createElement(tag);
 
     //Attrs
     createReact(()=>
@@ -45,7 +48,7 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
 }
 
 export const createVText = ( text: (()=>string) ): VNode<Text> => {
-    const element = new Text();
+    const element = wind.document.createTextNode("");
     createReact(()=>
         element.nodeValue = text())
     return new VNode(element);
