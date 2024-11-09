@@ -2,7 +2,7 @@ import createNode from "../nodes/play.htm"
 import { createProxy } from "../nodes/_"
 import __cdntext from "./__cdntext"
 export default ()=>{
-    const [proxy,id] = createProxy({
+    const [proxy,destroy] = createProxy({
         src:
 `const e = R.createVElement;
 const t = R.createVText;
@@ -38,6 +38,6 @@ document.body.appendChild(app().node);`,
         }
     })
     const vnode = createNode(proxy)
-    vnode.addProxy(id)
+    vnode.ondestroy(destroy)
     return vnode;
 }

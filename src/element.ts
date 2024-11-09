@@ -1,34 +1,24 @@
-import { destroyReactives, createReact, updateReactives } from "./reactive";
-import { createProxy, destroyProxy } from "./proxy";
+import { createReact } from "./reactive";
 
 type RNode = Element | CharacterData;
 export class VNode<T extends RNode>{
     node: T;
-    #reacts: symbol[];
-    #proxies: symbol[];
+    #ondestroy: (()=>void)[];
     #remove_dom: ()=>void;
-    constructor(node: T, reacts: symbol[] = []){
+    constructor(node: T){
         this.node = node;
-        this.#reacts = reacts;
         this.#remove_dom = node.remove.bind(node);
-        this.#proxies = [];
+        this.#ondestroy = [];
         node.remove = () => this.destroy();
     }
-    update(){
-        updateReactives(this.#reacts);
-    }
     destroy(){
-        this.#proxies.forEach(e=>destroyProxy(e));
-        destroyReactives(this.#reacts);
+        this.#ondestroy.forEach(e=>e());
         while(this.node.childNodes.length)
             this.node.childNodes[0].remove();
         this.#remove_dom();
     }
-    fook(target: ()=>void, effect: ()=>void){
-        this.#reacts.push(createReact(target, effect));
-    }
-    addProxy(id: symbol){
-        this.#proxies.push(id);
+    ondestroy(fn: ()=>void){
+        this.#ondestroy.push(fn);
     }
 }
 
@@ -37,30 +27,27 @@ export const createVElement = ( tag: string, contents: (()=>VNode<RNode>[]),
     
     const element = document.createElement(tag);
 
-    const reacts: symbol[] = [
-        //Attrs
-        createReact(()=>
-            Object.entries(attrs()).forEach(e=>
-                element.setAttribute(e[0], e[1]))),
-        //Content
-        createReact(()=>{
-            while(element.childNodes.length)
-                element.childNodes[0].remove();
-            contents().forEach(e=>element.appendChild(e.node));
-        })
-    ];
+    //Attrs
+    createReact(()=>
+        Object.entries(attrs()).forEach(e=>
+            element.setAttribute(e[0], e[1])));
+    //Content
+    createReact(()=>{
+        while(element.childNodes.length)
+            element.childNodes[0].remove();
+        contents().forEach(e=>element.appendChild(e.node));
+    })
     //Event
     Object.entries(event).forEach(e=>
         element.addEventListener(e[0], e[1]));
     
     element.dispatchEvent(new CustomEvent("create"));
-    return new VNode(element, reacts);
+    return new VNode(element);
 }
 
 export const createVText = ( text: (()=>string) ): VNode<Text> => {
     const element = new Text();
-    
-    return new VNode(element, 
-        [createReact(()=>
-            element.nodeValue = text())]);
+    createReact(()=>
+        element.nodeValue = text())
+    return new VNode(element);
 }

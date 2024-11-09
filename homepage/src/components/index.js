@@ -1,9 +1,9 @@
 import createNode from "../nodes/index.htm"
 import createWorldCard from "./wordcard"
 import createPlay from "./play"
-import {createProxy} from "../nodes/_"
+import {createProxy, fook} from "../nodes/_"
 export default ()=>{
-    const [proxy, id] = createProxy({
+    const [proxy, revoke] = createProxy({
         list:[
             {name: "simple", desc: "単純なリアクティブシステムと\nDOMへの反映のみを実装"},
             {name: "react", desc:  "関数からリアクティブな内容を\n伝えて最低限の更新"},
@@ -44,11 +44,11 @@ export default ()=>{
         }
     })
     const vnode = createNode(proxy);
-    vnode.addProxy(id)
-    vnode.fook(()=>proxy.name,()=>{
+    vnode.ondestroy(revoke)
+    fook(()=>proxy.name,()=>{
         proxy.input.name.value = proxy.name;
     })
-    vnode.fook(()=>proxy.desc,()=>{
+    fook(()=>proxy.desc,()=>{
         proxy.input.desc.value = proxy.desc;
     })
     return vnode;
