@@ -24,7 +24,7 @@ export class VNode<T extends ChildNode>{
 export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]), 
     attrs: ()=>object = ()=>({}), event: object = {}): VNode<HTMLElement> => {
     
-    const element = document.createElement(tag);
+    const element = window.document.createElement(tag);
 
     //Attrs
     fook(()=>
@@ -40,12 +40,12 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
     Object.entries(event).forEach(e=>
         element.addEventListener(e[0], e[1]));
     
-    element.dispatchEvent(new CustomEvent("create"));
+    element.dispatchEvent(new window.CustomEvent("create"));
     return new VNode(element);
 }
 
 export const createVText = ( text: (()=>string) ): VNode<Text> => {
-    const element = document.createTextNode("");
+    const element = window.document.createTextNode("");
     fook(()=>
         element.nodeValue = text())
     return new VNode(element);

@@ -3,7 +3,8 @@ simple, reactive, fast.
 
 簡易的でリアクティブなフレームワークを目指して開発しています。
 ## What
-Reactとかのコード多いな～って、リアクティブの部分だけ作ってウルトラ単純フレームワーク作りたいな～って。  
+Reactとかのコード多いな～って、リアクティブの部分だけ作って  
+ウルトラ単純フレームワーク作りたいな～って。  
 そして生まれた。  
 - Typescript対応
 - 完全()関数型
@@ -11,15 +12,24 @@ Reactとかのコード多いな～って、リアクティブの部分だけ作
 ## How to use...
 ```js
 import {createVElement as ve, createVText as vt} from "./dist/module.min.js";
-const _ = e=>e;
 
 function App(){
     return ve(
         "div", //Tag
         ()=>[vt(()=>"hello, world!")], //Content
-        ()=>_({id:"app"}), //Attr
+        ()=>({id:"app"}), //Attr
         {} //Event
     )
 }
 document.body.appendChild(App().node);
+```
+## グローバル変数について
+Rjsをnode上でjsdomとか使いたい人向けです  
+設定すべきはwindowのみです。以下のようにしてください。
+```js
+import * as R from "./dist/module.min.js"
+import {JSDOM} from "jsdom"
+globalThis.window = new JSDOM().window;
+//...Rjsのコード
+console.log(R.createVText(()=>""));
 ```
