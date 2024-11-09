@@ -1,7 +1,6 @@
 import { createReact } from "./reactive";
 
-type RNode = Element | CharacterData;
-export class VNode<T extends RNode>{
+export class VNode<T extends ChildNode>{
     node: T;
     #ondestroy: (()=>void)[];
     #remove_dom: ()=>void;
@@ -22,7 +21,7 @@ export class VNode<T extends RNode>{
     }
 }
 
-export const createVElement = ( tag: string, contents: (()=>VNode<RNode>[]), 
+export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]), 
     attrs: ()=>object = ()=>({}), event: object = {}): VNode<HTMLElement> => {
     
     const element = document.createElement(tag);
