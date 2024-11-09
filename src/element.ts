@@ -3,18 +3,15 @@ import { fook } from "./reactive";
 export class VNode<T extends ChildNode>{
     node: T;
     #ondestroy: (()=>void)[];
-    #remove_dom: ()=>void;
     constructor(node: T){
         this.node = node;
-        this.#remove_dom = node.remove.bind(node);
-        this.#ondestroy = [];
+        this.#ondestroy = [node.remove.bind(node)];
         node.remove = () => this.destroy();
     }
     destroy(){
         this.#ondestroy.forEach(e=>e());
         while(this.node.childNodes.length)
             this.node.childNodes[0].remove();
-        this.#remove_dom();
     }
     ondestroy(fn: ()=>void){
         this.#ondestroy.push(fn);
