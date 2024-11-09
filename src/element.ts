@@ -1,7 +1,7 @@
-import { createReact } from "./reactive";
+import { fook } from "./reactive";
 
-let wind:Window = window;
-export const changeWindow = (w: Window) => wind = w;
+let doc:Document = document;
+export const changeDocument = (d: Document) => doc = d;
 
 export class VNode<T extends ChildNode>{
     node: T;
@@ -27,14 +27,14 @@ export class VNode<T extends ChildNode>{
 export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]), 
     attrs: ()=>object = ()=>({}), event: object = {}): VNode<HTMLElement> => {
     
-    const element = wind.document.createElement(tag);
+    const element = doc.createElement(tag);
 
     //Attrs
-    createReact(()=>
+    fook(()=>
         Object.entries(attrs()).forEach(e=>
             element.setAttribute(e[0], e[1])));
     //Content
-    createReact(()=>{
+    fook(()=>{
         while(element.childNodes.length)
             element.childNodes[0].remove();
         contents().forEach(e=>element.appendChild(e.node));
@@ -48,8 +48,8 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
 }
 
 export const createVText = ( text: (()=>string) ): VNode<Text> => {
-    const element = wind.document.createTextNode("");
-    createReact(()=>
+    const element = doc.createTextNode("");
+    fook(()=>
         element.nodeValue = text())
     return new VNode(element);
 }

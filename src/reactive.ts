@@ -8,7 +8,7 @@ export const subscribeReact=(id: symbol, target: ()=>void, effect: (()=>void))=>
     effect();
 }
 
-export const createReact = (target: ()=>void, effect: (()=>void) = ()=>0): symbol => {
+export const fook = (target: ()=>void, effect: (()=>void) = ()=>0): symbol => {
     const id = Symbol();
     subscribeReact(id, target, effect);
     return id;

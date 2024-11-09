@@ -1,5 +1,5 @@
-import { createProxy } from "../src/proxy";
-import { createReact } from "../src/reactive";
+import "./tests"
+import {createProxy, fook} from "../index.ts";
 //@ts-ignore
 import { describe, it, expect } from "vitest";
 
@@ -11,13 +11,13 @@ describe("Simple",()=>{
         [proxy] = createProxy(proxy))
 
     it("Subscribe react",()=>
-        createReact(()=>fook_apply_target = proxy.value))
+        fook(()=>fook_apply_target = proxy.value))
 
     it("Edit proxy",()=>
         proxy.value = MSG)
 
     it("Is Applied?",()=>
-        expect(fook_apply_target).toBe(proxy.value))
+        expect(fook_apply_target).toBe(MSG))
 })
 
 describe("Target changing",()=>{
@@ -28,7 +28,7 @@ describe("Target changing",()=>{
         [proxy] = createProxy(proxy))
 
     it("Subscribe react",()=>
-        createReact(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2))
+        fook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2))
 
     it("Edit proxy",()=>{
         proxy.cond = true;
@@ -36,7 +36,7 @@ describe("Target changing",()=>{
     })
 
     it("Is Applied?",()=>
-        expect(fook_apply_target).toBe(proxy.value1))
+        expect(fook_apply_target).toBe(MSG))
 })
 
 describe("Tower",()=>{
@@ -47,12 +47,15 @@ describe("Tower",()=>{
         [proxy] = createProxy(proxy));
 
     it("Subscribe react",()=>
-        createReact(()=>{
+        fook(()=>{
             root_effectcount += 1
-            createReact(()=>proxy.value,()=>{
+            fook(()=>proxy.value,()=>{
                 child_effectcount += 1;
             })}));
     
+    it("Check root effect count", ()=>expect(root_effectcount).toBe(1));
+    it("Check child effect count", ()=>expect(child_effectcount).toBe(1));
+
     it("Update", ()=>proxy.value="");
     
     it("Check root effect count", ()=>expect(root_effectcount).toBe(1));
