@@ -21,8 +21,8 @@ describe("Element",()=>{
     it("Attr",()=>{
         const MSG = "Hello";
         const [proxy] = createProxy({value: ""});
-        let vnode:VNode<Element>|null;
-        vnode = createVElement("div",()=>[], ()=>({
+        let vnode:VNode<Element> = 
+            createVElement("div",()=>[], ()=>({
             id: proxy.value
         }))
 
@@ -30,5 +30,21 @@ describe("Element",()=>{
 
         proxy.value = MSG
         expect(vnode?.node.getAttribute("id")).toBe(MSG);
+    })
+    it("Remove",()=>{
+        const MSG = "Hello";
+        const [proxy] = createProxy([1,2]);
+        let vnode:VNode<Element> = 
+            createVElement("div",
+                ()=>proxy.map(e=>createVText(()=>e.toString())), 
+        )
+
+        expect(vnode?.node.childNodes.length).toBe(2);
+
+        proxy.push(3,4)
+        expect(vnode?.node.childNodes.length).toBe(4);
+
+        proxy.pop();
+        expect(vnode?.node.childNodes.length).toBe(3);
     })
 })

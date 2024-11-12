@@ -6,12 +6,11 @@ export class VNode<T extends ChildNode>{
     constructor(node: T){
         this.node = node;
         this.#ondestroy = [node.remove.bind(node)];
-        node.remove = () => this.destroy();
-    }
-    destroy(){
-        this.#ondestroy.forEach(e=>e());
-        while(this.node.childNodes.length)
-            this.node.childNodes[0].remove();
+        node.remove = () => {
+            this.#ondestroy.forEach(e=>e());
+            while(this.node.childNodes.length)
+                this.node.childNodes[0].remove();
+        }
     }
     ondestroy(fn: ()=>void){
         this.#ondestroy.push(fn);
