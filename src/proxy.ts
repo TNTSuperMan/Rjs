@@ -7,7 +7,7 @@ export const createProxy = <T extends object>(target: T):[T,()=>void] => {
         get(target, prop, receiver){
             const state = rState();
             if(state)
-                reacts.push([prop, state[0], state[1], state[2]]);
+                reacts.push([prop, ...state]);
             return Reflect.get(target, prop, receiver);
         },
         set(target, prop, value, receiver){
