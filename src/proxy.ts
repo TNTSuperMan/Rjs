@@ -1,8 +1,5 @@
 import { rState, subscribeReact } from "./reactive";
 
-// proxy, proxyid, revokefn
-const proxies: [object, symbol, ()=>void][] = [];
-
 export const createProxy = <T extends object>(target: T):[T,()=>void] => {
     //           prop           reactid target    effect
     let reacts: [string|symbol, symbol, ()=>void, ()=>void][] = [];
