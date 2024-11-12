@@ -46,4 +46,15 @@ describe("React",()=>{
         expect(root_effectcount).toBe(1);
         expect(child_effectcount).toBe(2);
     })
+    it("Child",()=>{
+        const MSG = "Hello"
+        let fook_apply_target = [0];
+        const [proxy] = createProxy({value:[0]})
+
+        fook(()=>fook_apply_target=proxy.value)
+    
+        proxy.value.push(0)
+    
+        expect(fook_apply_target.length).toBe(2)
+    })
 })
