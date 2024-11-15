@@ -55,7 +55,7 @@ function gen(e:ChildNode,dom:DOMWindow,stat?:boolean):string{
                 `${ntostr(e[0])}(${e[1]})`).join("")
 
             const contenttext:string = contents.join(",")
-            return `seg.${tag}${attrtext}${eventtext}(${contenttext})`;
+            return `\nseg.${tag}${attrtext}${eventtext}(${contenttext})`;
         }
     }else if(e instanceof dom.Text){
         const text = (e.nodeValue ?? "").trim();
