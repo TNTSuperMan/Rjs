@@ -9,7 +9,9 @@ const createSEProxy = data=>
         ((e??[]).forEach(t=>
             typeof t == "string" ?
                 data.el.appendChild(new Text(t)):
-                data.el.appendChild(t.node)),
+                t instanceof VNode ?
+                    data.el.appendChild(t.node):
+                    (()=>{throw new Error("Unknown seg: "+t)})()),
             new VNode(data.el)),{
     get(t, prop){
         data.arg.push(prop)
