@@ -12,6 +12,7 @@ export const createProxy = <T extends object>(target: T):[T,()=>void] => {
                     const child_proxy = createProxy(value);
                     Reflect.set(target, prop, child_proxy[0]);
                     childProxies.push([prop, child_proxy[1]]);
+                    return child_proxy;
                 }else{
                     childProxies.push([prop]);
                 }
