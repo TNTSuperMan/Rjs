@@ -3,18 +3,18 @@ import { rState, subscribeReact } from "./reactive";
 export const createProxy = <T extends object>(target: T):[T,()=>void] => {
     //           prop           reactid target    effect
     let reacts: [string|symbol, symbol, ()=>void, ()=>void][] = [];
-    let childProxies: [string|Symbol, (()=>void)?][] = [];
+    let childProxies: [string|Symbol, object?, (()=>void)?][] = [];
     const {proxy, revoke} = Proxy.revocable(target, {
         get(target, prop, receiver){
-            const value:any = Reflect.get(target, prop, receiver);
-            if(!childProxies.find(e=>e[0]==prop)){
-                if(typeof value == "object"){
-                    const child_proxy = createProxy(value);
-                    Reflect.set(target, prop, child_proxy[0]);
-                    childProxies.push([prop, child_proxy[1]]);
-                    return child_proxy;
+            let value:any = Reflect.get(target, prop, receiver);
+            if(typeof value == "object"){
+                const findres = childProxies.find(e=>e[0]==prop)
+                if(findres){
+                    value = findres[1];
                 }else{
-                    childProxies.push([prop]);
+                    const child_proxy = createProxy(value);
+                    childProxies.push([prop, child_proxy[0], child_proxy[1]]);
+                    value = child_proxy;
                 }
             }
             const state = rState();
@@ -33,6 +33,6 @@ export const createProxy = <T extends object>(target: T):[T,()=>void] => {
         }
     });
     return [proxy, ()=>(
-        childProxies.forEach(e=>e[1] ? e[1]() : 0),
+        childProxies.forEach(e=>e[2] ? e[2]() : 0),
         revoke())];
 }
