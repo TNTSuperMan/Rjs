@@ -3,11 +3,13 @@ export {VNode, fook, createProxy, createVElement, createVText};
 // Please edit to your Rjs entry path
 
 const createSEProxy = data=>
-    new Proxy((...e)=>typeof e[0] == "function"?
-        (data.el.addEventListener(data.arg.pop(),e[0]),createSEProxy(data)):
-        ((e??[]).forEach(t=>typeof t == "string" ?
-            data.el.appendChild(new Text(t)):
-            data.el.appendChild(t.node)),
+    new Proxy((...e)=>typeof e[0] == "function"?(
+            data.el.addEventListener(data.arg.pop(),e[0]),
+            createSEProxy(data)):
+        ((e??[]).forEach(t=>
+            typeof t == "string" ?
+                data.el.appendChild(new Text(t)):
+                data.el.appendChild(t.node)),
             new VNode(data.el)),{
     get(t, prop){
         data.arg.push(prop)
