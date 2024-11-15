@@ -4,6 +4,7 @@ export class VNode<T extends ChildNode>{
     node: T;
     #ondestroy: (()=>void)[];
     constructor(node: T){
+        node.dispatchEvent(new window.CustomEvent("create"));
         this.node = node;
         this.#ondestroy = [node.remove.bind(node)];
         node.remove = () => {
@@ -36,7 +37,6 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
     Object.entries(event).forEach(e=>
         element.addEventListener(e[0], e[1]));
     
-    element.dispatchEvent(new window.CustomEvent("create"));
     return new VNode(element);
 }
 

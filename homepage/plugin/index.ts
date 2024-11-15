@@ -23,13 +23,14 @@ function gen(e:ChildNode,dom:DOMWindow,stat?:boolean):string{
                 attrs.push([e.name, e.value])
             }
         })
+        const isReact = reactiveAttrs.length ? true : false;
 
         e.childNodes.forEach(e=>{
-            let ret = gen(e,dom,reactiveAttrs.length ? false : true);
+            let ret = gen(e,dom,!isReact);
             if(ret != '""' && ret != `t(()=>"")`) contents.push(ret)
         })
         
-        if(reactiveAttrs.length){
+        if(isReact){
             return `e(
     ${tostr(tag)},
     ()=>[ ${ contents.join(',') }]),
@@ -62,7 +63,7 @@ function gen(e:ChildNode,dom:DOMWindow,stat?:boolean):string{
             return text.substring(2, text.length-2)
         }else if(/^\{.+\}/.test(text)){//Reactive text
             const fn = text.substring(1, text.length-1)
-            return `t(${fn})`;
+            return `t(()=>${fn})`;
         }else{//Text
             if(stat){
                 return tostr(text);
