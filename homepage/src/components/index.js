@@ -3,6 +3,9 @@ import createWorldCard from "./wordcard"
 import createPlay from "./play"
 import {createProxy, fook} from "../nodes/_"
 export default ()=>{
+    let input = {
+        name:null,desc:null
+    }
     const [proxy, revoke] = createProxy({
         list:[
             {name: "simple", desc: "単純なリアクティブシステムと\nDOMへの反映のみを実装"},
@@ -13,16 +16,11 @@ export default ()=>{
         play: createPlay,
         name:"",
         desc:"",
-        input:{
-            name:null,
-            desc:null
-        },
         click(){
             proxy.list.push({
                 name:proxy.name,
                 desc:proxy.desc
             })
-            proxy.list = proxy.list;
             proxy.name = ""
             proxy.desc = ""
         },
@@ -36,20 +34,20 @@ export default ()=>{
         },
         create:{
             name(e){
-                proxy.input.name = e.target;
+                input.name = e.target;
             },
             desc(e){
-                proxy.input.desc = e.target;
+                input.desc = e.target;
             }
         }
     })
     const vnode = createNode(proxy);
     vnode.ondestroy(revoke)
-    fook(()=>proxy.name,()=>{
-        proxy.input.name.value = proxy.name;
+    fook(()=>{
+        input.name.value = proxy.name;
     })
-    fook(()=>proxy.desc,()=>{
-        proxy.input.desc.value = proxy.desc;
+    fook(()=>{
+        input.desc.value = proxy.desc;
     })
     return vnode;
 }
