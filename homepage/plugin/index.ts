@@ -69,8 +69,7 @@ function gen(e:ChildNode,dom:DOMWindow,stat?:boolean):string{
             }
         }
     }else{
-        console.log(e)
-        throw new Error("unexcepted gen target")
+        throw new Error("unexcepted gen target",{cause:e})
     }
 }
 
