@@ -4,10 +4,7 @@ const createSEProxy = (data: {arg:string[], el:Element})=>
     new Proxy(
         (...e: [()=>void] | (string|VNode<ChildNode>)[])=>{
         if(typeof e[0] == "function"){
-            const name = data.arg.pop();
-            if(name){
-                data.el.addEventListener(name, e[0]);
-            }
+            data.el.addEventListener(data.arg.pop()??"", e[0]);
             return createSEProxy(data);
         }else{
             e.forEach(t=>{
@@ -25,10 +22,12 @@ const createSEProxy = (data: {arg:string[], el:Element})=>
     get(t, prop){
         if(typeof prop == "string"){
             data.arg.push(prop)
-            const value = data.arg.pop()
-            const name = data.arg.pop()
-            if(name && value)
-                data.el.setAttribute(name,value)
+            if(data.arg.length >= 2){
+                data.el.setAttribute(
+                    data.arg.shift()??"",
+                    data.arg.pop()??""
+                )
+            }
             return createSEProxy(data)
         }
     }
