@@ -42,6 +42,7 @@ pre{
     padding:30px 0px;
     border-radius: 10px;
     background:#111;
+    white-space:pre-wrap;
 }
 
 /* dl link */
