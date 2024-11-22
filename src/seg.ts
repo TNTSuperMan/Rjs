@@ -3,8 +3,12 @@ import { VNode } from "./element"
 const createSEProxy = (data: {arg:string[], el:Element})=>
     new Proxy(
         (...e: [()=>void] | (string|VNode<ChildNode>)[])=>{
-        if(typeof e[0] == "function"){
-            data.el.addEventListener(data.arg.pop()??"", e[0]);
+        if(data.arg.length >= 1){
+            if(typeof e[0] == "function"){
+                data.el.addEventListener(data.arg.pop()??"", e[0]);
+            }else{
+                throw new Error("Unknown event handler: "+e[0]);
+            }
             return createSEProxy(data);
         }else{
             e.forEach(t=>{
