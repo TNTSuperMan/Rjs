@@ -7,17 +7,18 @@ const createSEProxy = (data: {arg:string[], el:Element})=>
             if(typeof e[0] == "function"){
                 data.el.addEventListener(data.arg.pop()??"", e[0]);
             }else{
-                throw new Error("Unknown event handler: "+e[0]);
+                data.arg.pop();
+                console.error("Unknown seg event handler:", e[0]);
             }
             return createSEProxy(data);
         }else{
-            e.forEach(t=>{
+            e.forEach((t,i)=>{
                 if(typeof t == "string"){
                     data.el.appendChild(new Text(t));
                 }else if(t instanceof VNode){
                     data.el.appendChild(t.node)
                 }else{
-                    throw new Error("Unknown seg: "+t);
+                    console.error(`Unknown seg content[${i}]:`, t)
                 }
             })
             return new VNode(data.el);
