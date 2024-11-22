@@ -14,7 +14,7 @@ export const createProxy = <T extends object>(target: T):[T,()=>void] => {
                 }else{
                     const child_proxy = createProxy(value);
                     childProxies.push([prop, child_proxy[0], child_proxy[1]]);
-                    value = child_proxy;
+                    value = child_proxy[0];
                 }
             }
             const state = rState();
