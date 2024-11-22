@@ -4,7 +4,6 @@ import { JSDOM } from "jsdom";
 function tostr(e:string){
     return JSON.stringify(e)
 }
-const reserved_words = "await,break,case,catch,class,const,continue,debugger,default,delete,do,else,enum,export,extends,false,finally,for,function,if,import,in,instanceof,new,null,return,super,switch,this,throw,true,try,typeof,var,void,while,with,yield,let,static,implements,interface,package,private,protected,public".split(",");
 
 function gen(e:ChildNode,dom:DOMWindow,stat?:boolean):string{
     if(e instanceof dom.Element){
@@ -40,9 +39,7 @@ function gen(e:ChildNode,dom:DOMWindow,stat?:boolean):string{
     )`
         }else{
             function ntostr(e:string){
-                if(reserved_words.find(t=>t==e)){
-                    return `[${tostr(e)}]`;
-                }else if(/^[a-zA-Z_$]+[a-zA-Z0-9_$]*$/.test(e)){
+                if(/^[a-zA-Z_$]+[a-zA-Z0-9_$]*$/.test(e)){
                     return "."+e;
                 }else{
                     return `[${tostr(e)}]`;
