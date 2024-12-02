@@ -1,6 +1,6 @@
 {
   "name": "@tntsuperman/rjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "simple, react, fast.",
   "type": "module",
   "main": "dist/module.js",
@@ -26,5 +26,6 @@
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/TNTSuperMan/Rjs"
-  }
+  },
+  "homepage": "https://tntsuperman.github.io/Rjs"
 }
