@@ -10,8 +10,8 @@
   "jsdelivr": "dist/browser.js",
   "scripts": {
     "build": "npm run build:lib && npm run build:types",
-    "build:lib": "rollup -c",
-    "build:types": "tsc",
+    "build:lib": "npx rollup -c",
+    "build:types": "npx tsc",
     "build:homepage": "cd homepage && npm install && npm run build",
     "prepare": "npm run build",
     "test": "vitest run"
