@@ -1,6 +1,6 @@
 {
-  "name": "rjs",
-  "version": "1.0.0",
+  "name": "@tntsuperman/rjs",
+  "version": "0.0.1",
   "description": "simple, react, fast.",
   "type": "module",
   "main": "dist/module.js",
@@ -10,6 +10,7 @@
     "build:lib": "rollup -c",
     "build:types": "tsc",
     "build:homepage": "cd homepage && npm install && npm run build",
+    "prepare": "npm run build",
     "test": "vitest run"
   },
   "author": "TNTSuperMan",
@@ -21,5 +22,9 @@
     "jsdom": "^25.0.1",
     "rollup": "^4.24.0",
     "vitest": "^2.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/TNTSuperMan/Rjs"
   }
 }

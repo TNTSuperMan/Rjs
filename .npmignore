@@ -1,5 +1,8 @@
 /.github
 /src
-/node_modules
 /homepage
+/node_modules
 /test
+rollup.config.js
+tsconfig.json
+vitest.config.js
