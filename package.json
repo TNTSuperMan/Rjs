@@ -10,9 +10,8 @@
   "jsdelivr": "dist/browser.js",
   "scripts": {
     "build": "npm run build:lib && npm run build:types",
-    "build:lib": "rollup -c",
-    "build:types": "tsc",
-    "build:homepage": "cd homepage && npm install && npm run build",
+    "build:lib": "npx rollup -c",
+    "build:types": "npx tsc",
     "prepare": "npm run build",
     "test": "vitest run"
   },
@@ -30,5 +29,5 @@
     "type": "git",
     "url": "git+ssh://git@github.com/TNTSuperMan/Rjs"
   },
-  "homepage": "https://tntsuperman.github.io/Rjs"
+  "homepage": "https://tntsuperman.github.io/Rjs-homepage/"
 }
