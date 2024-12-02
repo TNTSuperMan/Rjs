@@ -1,9 +1,14 @@
 {
-    "include": ["src/**/*"],
     "compilerOptions": {
-        "target": "ESNext",
-        "module": "esnext",
+        "target": "ES2022",
+        "module": "ES2022",
         "strict": true,
-        "outDir": "dist"
-    }
+        "outDir": "./dist",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "sourceMap": true,
+        "skipLibCheck": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["test", "node_modules", "dist", "homepage"]
 }

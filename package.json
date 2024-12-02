@@ -1,10 +1,14 @@
 {
   "name": "rjs",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "simple, react, fast.",
   "type": "module",
+  "main": "dist/module.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run build:bundle && npm run build:types",
+    "build:bundle": "rollup -c",
+    "build:types": "tsc",
     "build:homepage": "cd homepage && npm install && npm run build",
     "test": "vitest run"
   },
