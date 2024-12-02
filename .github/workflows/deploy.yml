@@ -7,6 +7,9 @@ on:
 jobs:
   npm:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,11 +18,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          registry-url: "https://npm.pkg.github.com"
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Install
         run: npm install
+      
+      - name: Build
+        run: npm run build
 
-      - name: Publish
+      - name: Setup .npmrc file to publish to GitHub Packages
+        run: npm ci
+      - name: Install Dependencies
         run: npm publish --access=public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
