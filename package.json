@@ -1,6 +1,6 @@
 {
   "name": "@tntsuperman/rjs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "simple, react, fast.",
   "type": "module",
   "main": "dist/module.js",
