@@ -22,5 +22,13 @@ export default [
     cfg({
         file: "./dist/browser.min.js",
         format: "iife",
+        name: "R"},1),
+    cfg({
+        file: "./dist/common.js",
+        format: "cjs",
+        name: "R"}),
+    cfg({
+        file: "./dist/common.min.js",
+        format: "cjs",
         name: "R"},1)
 ]

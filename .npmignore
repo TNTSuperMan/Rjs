@@ -6,3 +6,4 @@
 rollup.config.js
 tsconfig.json
 vitest.config.js
+index.ts
