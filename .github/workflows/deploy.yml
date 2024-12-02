@@ -41,7 +41,16 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install
+        run: npm install
+        
       
       - name: Download dists
         uses: actions/download-artifact@v4
@@ -57,12 +66,20 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       
       - name: Download dists
         uses: actions/download-artifact@v4
         with:
           name: dists
+      
+      - name: ls
+        run: ls
       
       - name: Build homepage
         run: npm run build:homepage
