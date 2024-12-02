@@ -48,6 +48,10 @@ jobs:
         with:
           node-version: '20'
       
+      - name: Install
+        run: npm install
+        
+      
       - name: Download dists
         uses: actions/download-artifact@v4
         with:
@@ -73,6 +77,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dists
+      
+      - name: ls
+        run: ls
       
       - name: Build homepage
         run: npm run build:homepage
