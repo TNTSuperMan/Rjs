@@ -33,3 +33,8 @@ globalThis.window = new JSDOM().window;
 //...Rjsのコード
 console.log(R.createVText(()=>""));
 ```
+## CDN
+> npmで公開したらunpkgとかjsdelivrが出してくれるんですね
+
+[unpkg](https://unpkg.com/@tntsuperman/rjs@0.0.3/dist/module.js)
+[jsdelivr](https://cdn.jsdelivr.net/npm/@tntsuperman/rjs/dist/module.js)
