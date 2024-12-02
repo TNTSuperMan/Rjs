@@ -1,10 +1,13 @@
 {
   "name": "@tntsuperman/rjs",
   "version": "0.0.3",
-  "description": "simple, react, fast.",
+  "description": "simple, react, fast JavaScript framework",
   "type": "module",
   "main": "dist/module.js",
+  "module": "dist/module.js",
   "types": "dist/index.d.ts",
+  "unpkg":    "dist/browser.js",
+  "jsdelivr": "dist/browser.js",
   "scripts": {
     "build": "npm run build:lib && npm run build:types",
     "build:lib": "rollup -c",
