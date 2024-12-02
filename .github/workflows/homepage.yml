@@ -26,7 +26,7 @@ jobs:
         run: npm install
       
       - name: Build library
-        run: npm run build
+        run: npm run build:lib
       
       - name: Test
         run: npm run test

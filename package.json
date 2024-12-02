@@ -6,8 +6,8 @@
   "main": "dist/module.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run build:bundle && npm run build:types",
-    "build:bundle": "rollup -c",
+    "build": "npm run build:lib && npm run build:types",
+    "build:lib": "rollup -c",
     "build:types": "tsc",
     "build:homepage": "cd homepage && npm install && npm run build",
     "test": "vitest run"
