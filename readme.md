@@ -11,7 +11,7 @@ Reactとかのコード多いな～って、リアクティブの部分だけ作
 - 内部伝達用オブジェクトは使わず、配列で伝達 → コードの無駄を無くす
 ## How to use...
 ```js
-import {createVElement as ve, createVText as vt} from "./dist/module.min.js";
+import {createVElement as ve, createVText as vt} from "./dist/R.esm.min.js";
 
 function App(){
     return ve(
@@ -38,6 +38,5 @@ console.log(R.createVText(()=>""));
 
 [unpkg](https://unpkg.com/@tntsuperman/rjs/dist/R.global.js)  
 [unpkg(最小化)](https://unpkg.com/@tntsuperman/rjs/dist/R.global.js)  
+ここで紹介している以外にもモジュール版、CommonJS版、AMD、SystemJS、UMDがあります。以下をご確認ください。  
 [unpkg(リスト)](https://unpkg.com/browse/@tntsuperman/rjs/dist/)
-
-> jsdelivrはブラウズが出来ない都合で消しました。
