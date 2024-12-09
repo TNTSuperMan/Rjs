@@ -27,7 +27,7 @@ document.body.appendChild(App().node);
 Rjsをnode上でjsdomとか使いたい人向けです  
 設定すべきはwindowのみです。以下のようにしてください。
 ```js
-import * as R from "./dist/module.min.js"
+import * as R from "./dist/R.esm.min.js"
 import {JSDOM} from "jsdom"
 globalThis.window = new JSDOM().window;
 //...Rjsのコード
