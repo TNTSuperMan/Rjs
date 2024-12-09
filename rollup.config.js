@@ -1,34 +1,28 @@
 import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 
-function cfg(out,ismin){
-    return{
+function cfg(format,name){
+    return[{
         input: "./src/index.ts",
-        output: out,
-        plugins: ismin ? [
-            typescript(), terser()
-        ] : [typescript()]
-    }
+        output: {
+            file: `./dist/R.${name??format}.js`, format,
+            name: "R"
+        },
+        plugins: [typescript()]
+    },{
+        input: "./src/index.ts",
+        output: {
+            file: `./dist/R.${name??format}.min.js`, format,
+            name: "R"
+        },
+        plugins: [typescript(), terser()]
+    }]
 }
 export default [
-    cfg({
-        file: "./dist/module.js"}),
-    cfg({
-        file: "./dist/module.min.js"},1),
-    cfg({
-        file: "./dist/browser.js",
-        format: "iife",
-        name: "R"}),
-    cfg({
-        file: "./dist/browser.min.js",
-        format: "iife",
-        name: "R"},1),
-    cfg({
-        file: "./dist/common.js",
-        format: "cjs",
-        name: "R"}),
-    cfg({
-        file: "./dist/common.min.js",
-        format: "cjs",
-        name: "R"},1)
+    ...cfg("amd"),
+    ...cfg("cjs"),
+    ...cfg("es", "esm"),
+    ...cfg("iife", "global"),
+    ...cfg("umd"),
+    ...cfg("system"),
 ]

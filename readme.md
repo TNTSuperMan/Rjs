@@ -36,5 +36,8 @@ console.log(R.createVText(()=>""));
 ## CDN
 > npmで公開したらunpkgとかjsdelivrが出してくれるんですね
 
-[unpkg](https://unpkg.com/@tntsuperman/rjs@0.0.3/dist/module.js)
-[jsdelivr](https://cdn.jsdelivr.net/npm/@tntsuperman/rjs/dist/module.js)
+[unpkg](https://unpkg.com/@tntsuperman/rjs/dist/R.global.js)  
+[unpkg(最小化)](https://unpkg.com/@tntsuperman/rjs/dist/R.global.js)  
+[unpkg(リスト)](https://unpkg.com/browse/@tntsuperman/rjs/dist/)
+
+> jsdelivrはブラウズが出来ない都合で消しました。

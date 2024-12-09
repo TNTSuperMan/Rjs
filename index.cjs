@@ -1,1 +1,1 @@
-module.exports = require("./dist/common");
+module.exports = require("./dist/R.cjs");
