@@ -1,6 +1,6 @@
 {
   "name": "@tntsuperman/rjs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "simple, react, fast JavaScript framework",
   "type": "module",
   "main": "dist/R.esm.js",
