@@ -1,7 +1,7 @@
 "use strict";
 
 if(process.env.NODE_ENV == "production"){
-    module.exports = require("./dist/common.min.js")
+    module.exports = require("./dist/R.cjs.min.js")
 }else{
-    module.exports = require("./dist/common.js")
+    module.exports = require("./dist/R.cjs.js")
 }
