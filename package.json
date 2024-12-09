@@ -7,7 +7,6 @@
   "module": "dist/R.esm.js",
   "types": "dist/index.d.ts",
   "unpkg":    "dist/R.global.js",
-  "jsdelivr": "dist/R.global.js",
   "scripts": {
     "build": "rollup -c",
     "test": "vitest run"
