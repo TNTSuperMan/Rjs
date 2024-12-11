@@ -1,39 +1,39 @@
 import { VNode } from "./element"
 
-const createSEProxy = (data: {arg:string[], el:Element})=>
+const createSEProxy = (el: Element, arg: string[])=>
     new Proxy(
         (...e: [()=>void] | (string|VNode<ChildNode>)[])=>{
-        if(data.arg.length >= 1){
+        if(arg.length >= 1){
             if(typeof e[0] == "function"){
-                data.el.addEventListener(data.arg.pop()??"", e[0]);
+                el.addEventListener(arg.pop()??"", e[0]);
             }else{
-                data.arg.pop();
+                arg.pop();
                 console.error("Unknown seg event handler:", e[0]);
             }
-            return createSEProxy(data);
+            return createSEProxy(el, arg);
         }else{
             e.forEach((t,i)=>{
                 if(typeof t == "string"){
-                    data.el.appendChild(new Text(t));
+                    el.appendChild(new Text(t));
                 }else if(t instanceof VNode){
-                    data.el.appendChild(t.node)
+                    el.appendChild(t.node)
                 }else{
                     console.error(`Unknown seg content[${i}]:`, t)
                 }
             })
-            return new VNode(data.el);
+            return new VNode(el);
         }
     },{
     get(t, prop){
         if(typeof prop == "string"){
-            data.arg.push(prop)
-            if(data.arg.length >= 2){
-                data.el.setAttribute(
-                    data.arg.shift()??"",
-                    data.arg.pop()??""
+            arg.push(prop)
+            if(arg.length >= 2){
+                el.setAttribute(
+                    arg.shift()??"",
+                    arg.pop()??""
                 )
             }
-            return createSEProxy(data)
+            return createSEProxy(el, arg);
         }
     }
 })
@@ -41,5 +41,5 @@ const createSEProxy = (data: {arg:string[], el:Element})=>
 export const seg = new Proxy({},{
     get:(t, prop)=>
         typeof prop == "string" ?
-            createSEProxy({el:document.createElement(prop),arg:[]}):null
+            createSEProxy(window.document.createElement(prop),[]):null
 })
