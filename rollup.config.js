@@ -6,14 +6,16 @@ function cfg(format,name){
         input: "./src/index.ts",
         output: {
             file: `./dist/R.${name??format}.js`, format,
-            name: "R"
+            name: "R",
+            sourcemap: true
         },
         plugins: [typescript()]
     },{
         input: "./src/index.ts",
         output: {
             file: `./dist/R.${name??format}.min.js`, format,
-            name: "R"
+            name: "R",
+            sourcemap: true
         },
         plugins: [typescript(), terser()]
     }]
