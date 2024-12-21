@@ -1,9 +1,9 @@
-import { rState, subscribeReact } from "./reactive";
+import { rTarget, subscribeReact } from "./reactive";
 
 const DepDestroyer: ((e:symbol)=>void)[] = [];
 
 export const createProxy = <T extends object>(target: T):[T,()=>void] => {
-    //           prop           reactid target    effect
+    //           prop        reactid target    effect
     let dep: [string|symbol, symbol, ()=>void, ()=>void][] = [];
     let childProxies: [string|Symbol, object, (()=>void)][] = [];
     const destroy_dep = (e: symbol) => 
@@ -22,9 +22,9 @@ export const createProxy = <T extends object>(target: T):[T,()=>void] => {
                     value = child_proxy[0];
                 }
             }
-            const state = rState();
-            if(state)
-                dep.push([prop, ...state]);
+            const r_target = rTarget();
+            if(r_target)
+                dep.push([prop, ...r_target]);
             return value;
         },
         set(target, prop, value, receiver){
