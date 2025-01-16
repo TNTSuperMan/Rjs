@@ -1,4 +1,4 @@
-import { fook } from "./reactive";
+import { hook } from "./reactive";
 
 export class VNode<T extends ChildNode>{
     node: T;
@@ -24,11 +24,11 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
     const element = window.document.createElement(tag);
 
     //Attrs
-    fook(()=>
+    hook(()=>
         Object.entries(attrs()).forEach(e=>
             element.setAttribute(...e)));
     //Content
-    fook(()=>{
+    hook(()=>{
         while(element.childNodes.length)
             element.childNodes[0].remove();
         contents().forEach(e=>element.appendChild(e.node));
@@ -42,7 +42,7 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
 
 export const createVText = ( text: (()=>string) ): VNode<Text> => {
     const element = new window.Text("");
-    fook(()=>
+    hook(()=>
         element.nodeValue = text())
     return new VNode(element);
 }

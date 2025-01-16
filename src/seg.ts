@@ -1,29 +1,35 @@
 import { VNode } from "./element"
 
-const createSEProxy = (el: Element, arg: string[])=>
-    new Proxy(
-        (...e: [()=>void] | (string|VNode<ChildNode>)[])=>{
-        if(arg.length >= 1){
-            if(typeof e[0] == "function"){
-                el.addEventListener(arg.pop()??"", e[0]);
+type Content = string|VNode<ChildNode>;
+
+type TypeSEGFn = ( this: [Element, string[]],
+    fnc?: ((()=>void) | Content), ...e: (typeof fnc extends (()=>void) ? [] : Content[]))
+    => (typeof fnc extends (()=>void) ? SEG : VNode<ChildNode>);
+type SEG = TypeSEGFn;
+
+const SEGFn: TypeSEGFn = function(fnc, ...e){
+    const [el, arg] = this;
+    if(arg.length >= 1 && typeof fnc == "function"){
+        el.addEventListener(arg.pop()??"", fnc);
+        return createSEProxy(el, arg);
+    }else if(typeof fnc == "string" || fnc instanceof Element){
+        [fnc, ...e].forEach((t,i)=>{
+            if(typeof t == "string"){
+                el.appendChild(new Text(t));
+            }else if(t instanceof VNode){
+                el.appendChild(t.node)
             }else{
-                arg.pop();
-                console.error("Unknown seg event handler:", e[0]);
+                console.error(`Unknown seg content[${i}]:`, t)
             }
-            return createSEProxy(el, arg);
-        }else{
-            e.forEach((t,i)=>{
-                if(typeof t == "string"){
-                    el.appendChild(new Text(t));
-                }else if(t instanceof VNode){
-                    el.appendChild(t.node)
-                }else{
-                    console.error(`Unknown seg content[${i}]:`, t)
-                }
-            })
-            return new VNode(el);
-        }
-    },{
+        })
+        return new VNode<ChildNode>(el);
+    }else{
+        return createSEProxy(el, arg);
+    }
+}
+
+const createSEProxy = (el: Element, arg: string[]):SEG=>
+    new Proxy<SEG>((...args)=>SEGFn.call([el, arg],...args),{
     get(t, prop){
         if(typeof prop == "string"){
             arg.push(prop)
@@ -38,8 +44,9 @@ const createSEProxy = (el: Element, arg: string[])=>
     }
 })
 
-export const seg = new Proxy({},{
+export const seg = new Proxy<{[key: string]: object | null}>({},{
     get:(t, prop)=>
         typeof prop == "string" ?
             createSEProxy(window.document.createElement(prop),[]):null
 })
+createSEProxy(document.createElement("a"), [])("")
