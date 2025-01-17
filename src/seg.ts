@@ -14,7 +14,7 @@ const createSEProxy = (el: HTMLElement, arg: string[]): SEG=>
             if(typeof content[0] == "function"){
                 const poped = arg.pop();
                 if(poped) el.addEventListener(poped, content[0]);
-                return SEGFn;
+                return createSEProxy(el, arg);
             }else{
                 el.append(...content.map(e=>
                     typeof e == "string"?
