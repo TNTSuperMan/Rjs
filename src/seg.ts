@@ -21,7 +21,7 @@ const createSEProxy = (el: HTMLElement, arg: string[]): SEG=>
                         e :
                         e instanceof VNode ?
                             e.node : ""))
-                return VNode.prototype;
+                return new VNode<HTMLElement>(el);
             }
         }
         return SEGFn
@@ -29,7 +29,7 @@ const createSEProxy = (el: HTMLElement, arg: string[]): SEG=>
     get(t, prop){
         if(typeof prop == "string"){
             arg.push(prop)
-            if(arg.length >= 2){
+            if(arg.length == 2){
                 el.setAttribute(
                     arg.shift()??"",
                     arg.pop()??""
