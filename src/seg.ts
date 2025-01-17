@@ -45,4 +45,3 @@ export const seg = new Proxy<{[key: string]: SEG}>({},{
         typeof prop == "string" ?
             createSEProxy(window.document.createElement(prop),[]):undefined
 })
-createSEProxy(document.createElement("a"), [])("")
