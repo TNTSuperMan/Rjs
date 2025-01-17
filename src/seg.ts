@@ -1,45 +1,47 @@
 import { VNode } from "./element"
 
-const createSEProxy = (data: {arg:string[], el:Element})=>
-    new Proxy(
-        (...e: [()=>void] | (string|VNode<ChildNode>)[])=>{
-        if(data.arg.length >= 1){
-            if(typeof e[0] == "function"){
-                data.el.addEventListener(data.arg.pop()??"", e[0]);
+type Content = string|VNode<ChildNode>;
+
+type SEG = {
+    (...fn: [()=>void]): SEG,
+    (...content: Content[]): VNode<HTMLElement>
+};
+const createSEProxy = (el: HTMLElement, arg: string[]): SEG=>
+    new Proxy<SEG>((()=>{
+        function SEGFn(...content: [()=>void]): SEG;
+        function SEGFn(...content: Content[]): VNode<HTMLElement>;
+        function SEGFn(...content: [()=>void] | Content[]){
+            if(typeof content[0] == "function"){
+                const poped = arg.pop();
+                if(poped) el.addEventListener(poped, content[0]);
+                return SEGFn;
             }else{
-                data.arg.pop();
-                console.error("Unknown seg event handler:", e[0]);
+                el.append(...content.map(e=>
+                    typeof e == "string"?
+                        e :
+                        e instanceof VNode ?
+                            e.node : ""))
+                return new VNode<HTMLElement>(el);
             }
-            return createSEProxy(data);
-        }else{
-            e.forEach((t,i)=>{
-                if(typeof t == "string"){
-                    data.el.appendChild(new Text(t));
-                }else if(t instanceof VNode){
-                    data.el.appendChild(t.node)
-                }else{
-                    console.error(`Unknown seg content[${i}]:`, t)
-                }
-            })
-            return new VNode(data.el);
         }
-    },{
+        return SEGFn
+    })(),{
     get(t, prop){
         if(typeof prop == "string"){
-            data.arg.push(prop)
-            if(data.arg.length >= 2){
-                data.el.setAttribute(
-                    data.arg.shift()??"",
-                    data.arg.pop()??""
+            arg.push(prop)
+            if(arg.length == 2){
+                el.setAttribute(
+                    arg.shift()??"",
+                    arg.pop()??""
                 )
             }
-            return createSEProxy(data)
+            return createSEProxy(el, arg);
         }
     }
 })
 
-export const seg = new Proxy({},{
+export const seg = new Proxy<{[key: string]: SEG}>({},{
     get:(t, prop)=>
         typeof prop == "string" ?
-            createSEProxy({el:document.createElement(prop),arg:[]}):null
+            createSEProxy(window.document.createElement(prop),[]):undefined
 })
