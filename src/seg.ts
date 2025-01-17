@@ -1,31 +1,31 @@
 import { VNode } from "./element"
 
 type Content = string|VNode<ChildNode>;
-type SEG = typeof SEGFn;
 
-function SEGFn(this: [HTMLElement, string[]], ...content: [()=>void]): SEG;
-function SEGFn(this: [HTMLElement, string[]], ...content: Content[]): VNode<HTMLElement>;
-function SEGFn(this: [HTMLElement, string[]], ...content: [()=>void] | Content[]){
-    const [el, arg] = this;
-    if(arg.length >= 1 && typeof content[0] == "function"){
-        el.addEventListener(arg.pop()??"", content[0]);
-        return createSEProxy(el, arg);
-    }else{
-        content.forEach((t,i)=>{
-            if(typeof t == "string"){
-                el.appendChild(new Text(t));
-            }else if(t instanceof VNode){
-                el.appendChild(t.node)
+type SEG = {
+    (...fn: [()=>void]): SEG,
+    (...content: Content[]): VNode<HTMLElement>
+};
+const createSEProxy = (el: HTMLElement, arg: string[]): SEG=>
+    new Proxy<SEG>((()=>{
+        function SEGFn(...content: [()=>void]): SEG;
+        function SEGFn(...content: Content[]): VNode<HTMLElement>;
+        function SEGFn(...content: [()=>void] | Content[]){
+            if(typeof content[0] == "function"){
+                const poped = arg.pop();
+                if(poped) el.addEventListener(poped, content[0]);
+                return SEGFn;
             }else{
-                console.error(`Unknown seg content[${i}]:`, t)
+                el.append(...content.map(e=>
+                    typeof e == "string"?
+                        e :
+                        e instanceof VNode ?
+                            e.node : ""))
+                return VNode.prototype;
             }
-        })
-        return new VNode<ChildNode>(el);
-    }
-}
-
-const createSEProxy = (el: HTMLElement, arg: string[]):SEG=>
-    new Proxy<SEG>((...args)=>SEGFn.call([el, arg],...args),{
+        }
+        return SEGFn
+    })(),{
     get(t, prop){
         if(typeof prop == "string"){
             arg.push(prop)
