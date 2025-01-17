@@ -1,19 +1,17 @@
 import { VNode } from "./element"
 
 type Content = string|VNode<ChildNode>;
+type SEG = typeof SEGFn;
 
-type TypeSEGFn = ( this: [Element, string[]],
-    fnc?: ((()=>void) | Content), ...e: (typeof fnc extends (()=>void) ? [] : Content[]))
-    => (typeof fnc extends (()=>void) ? SEG : VNode<ChildNode>);
-type SEG = TypeSEGFn;
-
-const SEGFn: TypeSEGFn = function(fnc, ...e){
+function SEGFn(this: [HTMLElement, string[]], ...content: [()=>void]): SEG;
+function SEGFn(this: [HTMLElement, string[]], ...content: Content[]): VNode<HTMLElement>;
+function SEGFn(this: [HTMLElement, string[]], ...content: [()=>void] | Content[]){
     const [el, arg] = this;
-    if(arg.length >= 1 && typeof fnc == "function"){
-        el.addEventListener(arg.pop()??"", fnc);
+    if(arg.length >= 1 && typeof content[0] == "function"){
+        el.addEventListener(arg.pop()??"", content[0]);
         return createSEProxy(el, arg);
-    }else if(typeof fnc == "string" || fnc instanceof Element){
-        [fnc, ...e].forEach((t,i)=>{
+    }else{
+        content.forEach((t,i)=>{
             if(typeof t == "string"){
                 el.appendChild(new Text(t));
             }else if(t instanceof VNode){
@@ -23,12 +21,10 @@ const SEGFn: TypeSEGFn = function(fnc, ...e){
             }
         })
         return new VNode<ChildNode>(el);
-    }else{
-        return createSEProxy(el, arg);
     }
 }
 
-const createSEProxy = (el: Element, arg: string[]):SEG=>
+const createSEProxy = (el: HTMLElement, arg: string[]):SEG=>
     new Proxy<SEG>((...args)=>SEGFn.call([el, arg],...args),{
     get(t, prop){
         if(typeof prop == "string"){
@@ -44,9 +40,9 @@ const createSEProxy = (el: Element, arg: string[]):SEG=>
     }
 })
 
-export const seg = new Proxy<{[key: string]: object | null}>({},{
+export const seg = new Proxy<{[key: string]: SEG}>({},{
     get:(t, prop)=>
         typeof prop == "string" ?
-            createSEProxy(window.document.createElement(prop),[]):null
+            createSEProxy(window.document.createElement(prop),[]):undefined
 })
 createSEProxy(document.createElement("a"), [])("")
