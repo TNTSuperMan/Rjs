@@ -37,6 +37,6 @@ console.log(R.createVText(()=>""));
 > npmで公開したらunpkgとかjsdelivrが出してくれるんですね
 
 [unpkg](https://unpkg.com/@tntsuperman/rjs/dist/R.global.js)  
-[unpkg(最小化)](https://unpkg.com/@tntsuperman/rjs/dist/R.global.js)  
+[unpkg(最小化)](https://unpkg.com/@tntsuperman/rjs/dist/R.global.min.js)  
 ここで紹介している以外にもモジュール版、CommonJS版、AMD、SystemJS、UMDがあります。以下をご確認ください。  
 [unpkg(リスト)](https://unpkg.com/browse/@tntsuperman/rjs/dist/)
