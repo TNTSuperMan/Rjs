@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createProxy, fook } from "../src";
+import { createProxy, hook } from "../src";
 
 describe("proxy",()=>{
     it("effectcheck",()=>{
@@ -9,7 +9,7 @@ describe("proxy",()=>{
         const [proxy2] = createProxy({value:"2"});
         let effectdata = "";
         let calccount = 0;
-        fook(()=>{
+        hook(()=>{
             calccount++;
             if(flag.value){
                 effectdata = proxy1.value;

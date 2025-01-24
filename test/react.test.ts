@@ -1,5 +1,5 @@
 import "./tests"
-import {createProxy, fook} from "../index";
+import { createProxy, hook } from "../index";
 //@ts-ignore
 import { describe, it, expect } from "vitest";
 
@@ -9,7 +9,7 @@ describe("React",()=>{
         const [proxy] = createProxy({value:""})
         let fook_apply_target = "";
 
-        fook(()=>fook_apply_target = proxy.value)
+        hook(()=>fook_apply_target = proxy.value)
     
         proxy.value = MSG
 
@@ -20,7 +20,7 @@ describe("React",()=>{
         let fook_apply_target = "";
         const [proxy] = createProxy({value1:"",value2:"",cond:false})
 
-        fook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2)
+        hook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2)
     
         proxy.cond = true;
         proxy.value1 = MSG;
@@ -32,9 +32,9 @@ describe("React",()=>{
         let root_effectcount = 0;
         let child_effectcount = 0;
     
-        fook(()=>{
+        hook(()=>{
             root_effectcount += 1
-            fook(()=>proxy.value,()=>{
+            hook(()=>proxy.value,()=>{
                 child_effectcount += 1;
         })});
         
@@ -51,7 +51,7 @@ describe("React",()=>{
         let fook_apply_target = [0];
         const [proxy] = createProxy({value:[0]})
 
-        fook(()=>fook_apply_target=proxy.value)
+        hook(()=>fook_apply_target=proxy.value)
     
         proxy.value.push(0)
     
