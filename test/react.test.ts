@@ -6,7 +6,7 @@ import { describe, it, expect } from "vitest";
 describe("React",()=>{
     it("Simple",()=>{
         const MSG = "Hello"
-        const [proxy] = createProxy({value:""})
+        const proxy = createProxy({value:""})
         let fook_apply_target = "";
 
         hook(()=>fook_apply_target = proxy.value)
@@ -18,7 +18,7 @@ describe("React",()=>{
     it("Target changing",()=>{
         const MSG = "Hello"
         let fook_apply_target = "";
-        const [proxy] = createProxy({value1:"",value2:"",cond:false})
+        const proxy = createProxy({value1:"",value2:"",cond:false})
 
         hook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2)
     
@@ -28,7 +28,7 @@ describe("React",()=>{
         expect(fook_apply_target).toBe(MSG)
     })
     it("Tower",()=>{
-        const [proxy] = createProxy({value:"aaa"})
+        const proxy = createProxy({value:"aaa"})
         let root_effectcount = 0;
         let child_effectcount = 0;
     
@@ -49,7 +49,7 @@ describe("React",()=>{
     it("Child",()=>{
         const MSG = "Hello"
         let fook_apply_target = [0];
-        const [proxy] = createProxy({value:[0]})
+        const proxy = createProxy({value:[0]})
 
         hook(()=>fook_apply_target=proxy.value)
     

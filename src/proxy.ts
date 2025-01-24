@@ -2,23 +2,22 @@ import { rTarget, subscribeReact } from "./reactive";
 
 const DepDestroyer: ((e:symbol)=>void)[] = [];
 
-export const createProxy = <T extends object>(target: T):[T,()=>void] => {
+export const createProxy = <T extends object>(target: T): T => {
     //           prop        reactid target    effect
     let dep: [string|symbol, symbol, ()=>void, ()=>void][] = [];
-    let childProxies: [string|Symbol, object, (()=>void)][] = [];
+    let childProxies: Map<string|symbol, object> = new Map;
     const destroy_dep = (e: symbol) => 
         dep = dep.filter(t=>t[1] != e);
 
-    const {proxy, revoke} = Proxy.revocable(target, {
+    const proxy = new Proxy(target, {
         get(target, prop, receiver){
             let value:any = Reflect.get(target, prop, receiver);
             if(typeof value == "object"){
-                const findres = childProxies.find(e=>e[0]==prop)
-                if(findres){
-                    value = findres[1];
+                if(childProxies.has(prop)){
+                    value = childProxies.get(prop);
                 }else{
                     const child_proxy = createProxy(value);
-                    childProxies.push([prop, ...child_proxy]);
+                    childProxies.set(prop, child_proxy);
                     value = child_proxy[0];
                 }
             }
@@ -38,8 +37,5 @@ export const createProxy = <T extends object>(target: T):[T,()=>void] => {
         }
     });
     DepDestroyer.push(destroy_dep);
-    return [proxy, ()=>(
-        DepDestroyer.splice(DepDestroyer.findIndex(e=>e==destroy_dep),1),
-        childProxies.forEach(e=>e[2] ? e[2]() : 0),
-        revoke())];
+    return proxy;
 }

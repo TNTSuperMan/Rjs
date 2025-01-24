@@ -4,9 +4,9 @@ import { createProxy, hook } from "../src";
 describe("proxy",()=>{
     it("effectcheck",()=>{
 
-        const [flag] = createProxy({value:true})
-        const [proxy1] = createProxy({value:"1"});
-        const [proxy2] = createProxy({value:"2"});
+        const flag = createProxy({value:true})
+        const proxy1 = createProxy({value:"1"});
+        const proxy2 = createProxy({value:"2"});
         let effectdata = "";
         let calccount = 0;
         hook(()=>{
