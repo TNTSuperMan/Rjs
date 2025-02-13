@@ -1,6 +1,5 @@
 import "./tests"
 import { createProxy, hook } from "../index";
-//@ts-ignore
 import { describe, it, expect } from "vitest";
 
 describe("React",()=>{
