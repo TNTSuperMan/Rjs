@@ -5,7 +5,7 @@ import { describe, it, expect } from "vitest";
 describe("Text",()=>{
     it("Text",()=>{
         const MSG = "Hello";
-        const [proxy] = createProxy({value: ""});
+        const proxy = createProxy({value: ""});
         let vnode:VNode<Text>|null;
         vnode = createVText(()=>proxy.value);
 
@@ -19,7 +19,7 @@ describe("Text",()=>{
 describe("Element",()=>{
     it("Attr",()=>{
         const MSG = "Hello";
-        const [proxy] = createProxy({value: ""});
+        const proxy = createProxy({value: ""});
         let vnode:VNode<Element> = 
             createVElement("div",()=>[], ()=>({
             id: proxy.value
@@ -32,7 +32,7 @@ describe("Element",()=>{
     })
     it("Remove",()=>{
         const MSG = "Hello";
-        const [proxy] = createProxy([1,2]);
+        const proxy = createProxy([1,2]);
         let vnode:VNode<Element> = 
             createVElement("div",
                 ()=>proxy.map(e=>createVText(()=>e.toString())), 
