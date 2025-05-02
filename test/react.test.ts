@@ -6,13 +6,13 @@ describe("React",()=>{
     it("Simple",()=>{
         const MSG = "Hello"
         const proxy = createProxy({value:""})
-        let fook_apply_target = "";
+        let hook_apply_target = "";
 
-        hook(()=>fook_apply_target = proxy.value)
+        hook(()=>hook_apply_target = proxy.value)
     
         proxy.value = MSG
 
-        expect(fook_apply_target).toBe(MSG)
+        expect(hook_apply_target).toBe(MSG)
     })
     it("Target changing",()=>{
         const MSG = "Hello"
@@ -47,13 +47,13 @@ describe("React",()=>{
     })
     it("Child",()=>{
         const MSG = "Hello"
-        let fook_apply_target = [0];
+        let hook_apply_target = [0];
         const proxy = createProxy({value:[0]})
 
-        hook(()=>fook_apply_target=proxy.value)
+        hook(()=>hook_apply_target=proxy.value)
     
         proxy.value.push(0)
     
-        expect(fook_apply_target.length).toBe(2)
+        expect(hook_apply_target.length).toBe(2)
     })
 })
