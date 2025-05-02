@@ -1,3 +1,3 @@
-import { JSDOM } from "jsdom"
-import { vi } from "vitest"
-vi.stubGlobal("window",new JSDOM().window)
+import { Window } from "happy-dom"
+//@ts-ignore
+globalThis.window = new Window();

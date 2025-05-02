@@ -31,7 +31,7 @@ export const createVElement = ( tag: string, contents: (()=>VNode<ChildNode>[]),
     hook(()=>{
         while(element.childNodes.length)
             element.childNodes[0].remove();
-        contents().forEach(e=>element.appendChild(e.node));
+        element.append(...contents().map(e=>e.node));
     })
     //Event
     Object.entries(event).forEach(e=>

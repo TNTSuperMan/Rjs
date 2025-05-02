@@ -1,15 +1,15 @@
-import { describe, expect, it } from "vitest";
-import { createProxy, fook } from "../src";
+import { describe, expect, it } from "bun:test";
+import { createProxy, hook } from "../src";
 
 describe("proxy",()=>{
     it("effectcheck",()=>{
 
-        const [flag] = createProxy({value:true})
-        const [proxy1] = createProxy({value:"1"});
-        const [proxy2] = createProxy({value:"2"});
+        const flag = createProxy({value:true})
+        const proxy1 = createProxy({value:"1"});
+        const proxy2 = createProxy({value:"2"});
         let effectdata = "";
         let calccount = 0;
-        fook(()=>{
+        hook(()=>{
             calccount++;
             if(flag.value){
                 effectdata = proxy1.value;

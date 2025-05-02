@@ -1,26 +1,25 @@
 import "./tests"
-import {createProxy, fook} from "../index";
-//@ts-ignore
-import { describe, it, expect } from "vitest";
+import {createProxy, hook} from "../src";
+import { describe, it, expect } from "bun:test";
 
 describe("React",()=>{
     it("Simple",()=>{
         const MSG = "Hello"
-        const [proxy] = createProxy({value:""})
-        let fook_apply_target = "";
+        const proxy = createProxy({value:""})
+        let hook_apply_target = "";
 
-        fook(()=>fook_apply_target = proxy.value)
+        hook(()=>hook_apply_target = proxy.value)
     
         proxy.value = MSG
 
-        expect(fook_apply_target).toBe(MSG)
+        expect(hook_apply_target).toBe(MSG)
     })
     it("Target changing",()=>{
         const MSG = "Hello"
         let fook_apply_target = "";
-        const [proxy] = createProxy({value1:"",value2:"",cond:false})
+        const proxy = createProxy({value1:"",value2:"",cond:false})
 
-        fook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2)
+        hook(()=>fook_apply_target = proxy.cond ? proxy.value1 : proxy.value2)
     
         proxy.cond = true;
         proxy.value1 = MSG;
@@ -28,13 +27,13 @@ describe("React",()=>{
         expect(fook_apply_target).toBe(MSG)
     })
     it("Tower",()=>{
-        const [proxy] = createProxy({value:"aaa"})
+        const proxy = createProxy({value:"aaa"})
         let root_effectcount = 0;
         let child_effectcount = 0;
     
-        fook(()=>{
+        hook(()=>{
             root_effectcount += 1
-            fook(()=>proxy.value,()=>{
+            hook(()=>proxy.value,()=>{
                 child_effectcount += 1;
         })});
         
@@ -48,13 +47,13 @@ describe("React",()=>{
     })
     it("Child",()=>{
         const MSG = "Hello"
-        let fook_apply_target = [0];
-        const [proxy] = createProxy({value:[0]})
+        let hook_apply_target = [0];
+        const proxy = createProxy({value:[0]})
 
-        fook(()=>fook_apply_target=proxy.value)
+        hook(()=>hook_apply_target=proxy.value)
     
         proxy.value.push(0)
     
-        expect(fook_apply_target.length).toBe(2)
+        expect(hook_apply_target.length).toBe(2)
     })
 })
