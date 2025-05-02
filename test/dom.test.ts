@@ -1,6 +1,6 @@
 import "./tests"
 import {createProxy, createVElement, createVText, VNode} from "../src";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "bun:test";
 
 describe("Text",()=>{
     it("Text",()=>{

@@ -1,6 +1,6 @@
 import "./tests"
 import {createProxy, hook} from "../src";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "bun:test";
 
 describe("React",()=>{
     it("Simple",()=>{
