@@ -1,5 +1,5 @@
 import "./tests"
-import {createProxy, createVElement, createVText, VNode} from "../index";
+import {createProxy, createVElement, createVText, VNode} from "../src";
 import { describe, it, expect } from "vitest";
 
 describe("Text",()=>{
