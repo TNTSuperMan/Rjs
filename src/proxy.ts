@@ -18,7 +18,7 @@ export const createProxy = <T extends object>(target: T): T => {
                 }else{
                     const child_proxy = createProxy(value);
                     childProxies.set(prop, child_proxy);
-                    value = child_proxy[0];
+                    value = child_proxy;
                 }
             }
             const r_target = rTarget();
