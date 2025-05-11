@@ -6,22 +6,20 @@
     "type": "git",
     "url": "git+ssh://git@github.com/TNTSuperMan/Rjs"
   },
-  "main": "dist/R.esm.js",
-  "module": "dist/R.esm.js",
+  "main": "dist/cjs.js",
+  "module": "dist/esm.js",
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.1",
     "@types/bun": "^1.2.11",
-    "happy-dom": "^17.4.6",
-    "rollup": "^4.24.0"
+    "happy-dom": "^17.4.6"
   },
   "description": "simple, react, fast JavaScript framework",
   "homepage": "https://tntsuperman.github.io/Rjs-homepage/",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c"
+    "build": "tsc && bun build:esm && bun build:cjs",
+    "build:esm": "bun build --outdir=dist --minify --format=esm --entry-naming=esm.js ./src/index.ts",
+    "build:cjs": "bun build --outdir=dist --minify --format=cjs --entry-naming=cjs.js ./src/index.ts"
   },
   "type": "module",
-  "types": "dist/index.d.ts",
-  "unpkg": "dist/R.global.js"
+  "types": "dist/index.d.ts"
 }
